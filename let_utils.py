@@ -1,0 +1,128 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+"""
+@File  : let_utils.py
+@Author: JACK
+@Date  : 2019/8/23
+@Des   :
+"""
+import re
+import json
+import base64
+
+
+def strclass(cls):
+    return "%s.%s" % (cls.__module__, cls.__qualname__)
+
+
+def get_value(*args, **kwargs):
+    return 1
+
+
+# 清理api测试后的参数环境
+def clear_value(args):
+    del(args)
+
+
+def reg_str(r, st):
+    if re.search(r, st):
+        return True
+    return False
+
+
+# 正则匹配判断是方法还是参数
+def match_m_or_v(type, str):
+    if type == "m":
+        r = re.match("^\$\{\_\_(.*)\}", str).group(1)
+    elif type == "v":
+        r = re.match("^\$\{(.*)\}", str).group(1)
+    return r
+
+
+# 是否存在参数化必要
+def is_params(obj):
+    pass
+
+
+# 获取需要参数化的个数
+def get_params_num(obj):
+    if isinstance(obj, str):
+        return len(re.findall("\$\{", obj))
+    if isinstance(obj, dict):
+        str = json.dumps(obj)
+        return len(re.findall("\$\{", str))
+
+
+def get_params_list_sp(obj):
+    l = []
+    if isinstance(obj, str):
+        pass
+    elif isinstance(obj, dict):
+        obj = json.dumps(obj)
+    obj_split = obj.split("$")
+    for _v in obj_split:
+        if "{" not in _v:
+            obj_split.remove(_v)
+    for _v_ in obj_split:
+        val = re.match("^\{(.*)\}", _v_).group(1)
+        l.append(val)
+    return l
+
+
+# re版本获取列表
+def get_params_list_re(obj):
+    if isinstance(obj, str):
+        pass
+    elif isinstance(obj, dict):
+        obj = json.dumps(obj)
+    pattern = '\$\{(.+?)\}'
+    l = re.findall(pattern, obj)
+    return l
+
+
+# 当前方法主要用于参数化结果的转化为执行值
+def parameters(obj, var, valuepools):
+    paramlist = set(get_params_list_re(obj))
+    if isinstance(obj, str):
+        pass
+    elif isinstance(obj, dict):
+        obj = json.dumps(obj)
+
+    for i in paramlist:
+        if valuepools.get(i) is not None:
+            obj = re.sub("\$\{"+str(i)+"\}", str(valuepools[i]), obj)
+
+        elif var.get(i) is not None:
+            obj = re.sub("\$\{"+str(i)+"\}", str(var[i]), obj)
+
+        elif var.get(i) is not None and valuepools.get(i) is not None:
+            obj = re.sub("\$\{" + str(i) + "\}", str(var[i]), obj)
+
+        else:
+            print("var|valuePool中不存在需要的参数")
+    return obj
+
+
+# image转base64方法
+def image_2_base64(path):
+    with open(path, "rb") as f:
+        base64_data = base64.b64encode(f.read())
+        base64_data = str(base64_data, encoding="utf-8")
+    return base64_data
+
+
+# image转json
+def image_2_json(filename, path):
+    with open(path, 'rb') as f:
+        return (filename, f, 'image/png')
+
+
+def collect_value(re, tp, str):
+    if tp == "headers":
+        headers = re.headers
+        if str.upper() == "COOKIE":
+            return headers["Set-Cookie"]
+        elif str.upper() == "SESSION":
+            pass
+    pass
+

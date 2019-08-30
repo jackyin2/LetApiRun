@@ -1,0 +1,33 @@
+{
+   "test": [{
+     "name": "search all case",
+
+     "setupcase": {
+     },
+
+     "requestor":{
+        "url": "${host}/telwoy/device-mgr/api/v1/common/face_group/search_all",
+        "method": "POST",
+        "headers": {
+          "content-type": "application/json",
+          "Authorization": "Bearer ${token}"
+       },
+     "data": { "dataType": "tree", "permission": true}
+     },
+
+     "validator": {
+       "status_code": 200,
+       "headers": {"Content-Type": "application/json;charset=UTF-8"},
+        "assertEqJson":{"success":true}
+     },
+
+     "collector":{
+     },
+
+     "teardowncase":{
+       "clearcookies": "clearcookies",
+       "clearsession": "clearsession",
+       "cleartoken": "cleartoken"
+     }
+   }]
+}
