@@ -21,7 +21,8 @@ http协议 and 前后端分离 and json
        "abc":123,
        "c":3,
        "fun2":"${__get_value(a=1, b=2)}",
-       "username": "jack"
+       "username": "jack",
+       "a":"${__get_value(${abc}, ${c})}"
      },
 
      "requestor":{
