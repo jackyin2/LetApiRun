@@ -118,17 +118,35 @@ class Runner(object):
         else:
             print("当前没有需要执行的用例，请检查是否有错误")
 
-
     def _setup(self, case):
+        """
+        setup 需要注意，在填写相关的部分时，必须按照正常kv，方法kv，方法参数kv的顺序填写，不允许乱序，
+        否则会出现参数化失败的情况
+        :param case: 
+        :return: 
+        """
         print("---start---setup---", )
         vals = case["setupcase"]
         _vals = {}
+        # 首先_vals先加载方法中不存在$的方法和正常的值
         for key, val in vals.items():
             # 判断是否是一个待执行的方法，
-            if "${__" in str(val):
-                _vals[key] = eval(match_m_or_v("m", val))
-            else:
+            method = is_method(str(val))
+            if method:
+                if is_params(method):
+                    continue
+                # 判断当前的方法是否还需要继续参数化，如果需要参数化，则等待后面执行
+                _vals[key] = eval(method)
+            elif not method:
                 _vals[key] = val
+            else:
+                pass
+                
+        for k, v in vals.items():
+            method = is_method(str(v))
+            if method and is_params(method):
+                method = parameters(method, _vals, VALUEPOOLS)
+                _vals[k] = eval(method)
         return _vals
 
     def _runapi(self, case, v_setup):
@@ -259,7 +277,7 @@ class Runner(object):
             elif k == "methods":
                 for k2, v2 in v.items():
                     if "${__" in str(v2):
-                        VALUEPOOLS[k2] = eval(match_m_or_v("m", v2))
+                        VALUEPOOLS[k2] = eval(is_method(v2))
             else:
                 pass
         return True

@@ -30,18 +30,31 @@ def reg_str(r, st):
     return False
 
 
-# 正则匹配判断是方法还是参数
-def match_m_or_v(type, str):
-    if type == "m":
-        r = re.match("^\$\{\_\_(.*)\}", str).group(1)
-    elif type == "v":
-        r = re.match("^\$\{(.*)\}", str).group(1)
-    return r
+def is_method(str):
+    method = re.search("\$\{\_\_(.+)\}", str)
+    if method is None:
+        return False
+    return method.group(1)
 
+
+# 正则匹配方法
+# def match_method(str):
+#     r = re.match("^\$\{\_\_(.*)\}", str)
+#     return r.group(1)
+
+# def match_m_or_v(type, str):
+#     if type == "m":
+#         r = re.match("^\$\{\_\_(.*)\}", str).group(1)
+#     elif type == "v":
+#         r = re.match("^\$\{(.*)\}", str).group(1)
+#     return r
 
 # 是否存在参数化必要
 def is_params(obj):
-    pass
+    params = get_params_list_re(obj)
+    if len(params) > 0:
+        return True
+    return False
 
 
 # 获取需要参数化的个数
@@ -97,7 +110,6 @@ def parameters(obj, var, valuepools):
 
         elif var.get(i) is not None and valuepools.get(i) is not None:
             obj = re.sub("\$\{" + str(i) + "\}", str(var[i]), obj)
-
         else:
             print("var|valuePool中不存在需要的参数")
     return obj
