@@ -7,12 +7,15 @@
 @Des   :
 """
 from let_runner import Runner
+from let_result import HtmlReportor
 
 
 def main(path):
     runer = Runner(path=path)
     runer.run()
-    runer.report()
+    # runer.report_to_ctr()
+    report = HtmlReportor("E:\jackstudy\LetApiRun\\templeate\\report_template_1.html", type='html')
+    report.report()
 
     # 结果生成
 

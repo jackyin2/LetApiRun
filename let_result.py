@@ -8,6 +8,9 @@
 """
 
 
+from jinja2 import Template
+from let_init import GENARATE_RESULT
+
 class ApiResult(object):
     def __init__(self):
         self._api_name = None
@@ -60,21 +63,69 @@ class ApiResult(object):
         self._message = val
 
 
-def result_return(GENARATE_RESULT):
-    success = fail = time = 0
+class Reportor(object):
+    """
+    report生成器
+    """
+    def __init__(self,  report_name, type=None, genarate_result=GENARATE_RESULT):
+        self.template = "E:\jackstudy\LetApiRun\\templeate\\report_template.html"
+        self.genarate_result = genarate_result
+        self.report_name = report_name
+        self.type = type
+        self.r = None
 
-    for reobj in GENARATE_RESULT:
-        if reobj.result == 1:
-            success += 1
-            time += reobj.time
-        if reobj.result == 0:
-            fail += 1
-    avg_time = time/success
-    return {"success": success, "fail": fail, "avg_time": avg_time}
+    def _read_template(self):
+        print("---read_report---")
+        with open(self.template, 'r', encoding='UTF-8') as f:
+            t = f.read()
+            tp = Template(t)
+            self.r = tp.render(success=self._count_success(), all=self._count_all(), fail=self._count_failure(), fail_messages=self._get_failure_message())
+        return self.r
+
+    def _new_report(self):
+        print("---report-success---")
+        with open(self.report_name, 'w') as f:
+            f.write(self.r)
+
+    def _report(self):
+        if self.report_name.endswith(self.type):
+            self._read_template()
+            self._new_report()
+        else:
+            print("当前生成的报告非指定格式{}".format(self.type))
+
+    def _count_all(self):
+        return len(self.genarate_result)
+
+    def _count_success(self):
+        return len([s for s in self.genarate_result if s.result == True])
+
+    def _count_failure(self):
+        return len([f for f in self.genarate_result if f.result == False])
+
+    def _get_failure_message(self):
+        return [f for f in self.genarate_result if f.result == False]
 
 
-class Reportor():
-    pass
+class HtmlReportor(Reportor):
+
+    def __init__(self, report_name, type):
+        super(HtmlReportor,self).__init__(report_name, type)
+
+    def report(self):
+        self._report()
+
+
+class TextReportor(Reportor):
+    def __init__(self, report_name):
+        super(TextReportor,self).__init__(report_name)
+
+    def report(self):
+        self._report()
+
+
+
+
 
 
 

@@ -87,14 +87,13 @@ class Runner(object):
         # check loader是否有内容
         if len(self.loader) > 0:
             for test_case in self.loader:
-
                 cases = test_case["test"]
                 # 区分开是存在多用例，还是单用例
                 if type(cases) is list:
                     for case in cases:
                         global count
                         count += 1
-                        print("*****当前执行第 {} 个 case：{}********".format(count,case["name"]), end=":")
+                        print("*****当前执行第 {} 个 case：{}********".format(count,case["name"]))
                         if case["setupcase"]:
                             v = self._setup(case)
                         else:
@@ -153,7 +152,7 @@ class Runner(object):
         print("----api---", end="")
         # 执行api方法, 此处注意返回的parameter是一个字符串，后续需要进行相关处理
         url = parameters(case["requestor"]["url"], v_setup, VALUEPOOLS)
-        method = case["requestor"]["method"].upper()
+        method = parameters(case["requestor"]["method"], v_setup, VALUEPOOLS).upper()
         headers = json.loads(parameters(case["requestor"]["headers"], v_setup, VALUEPOOLS))
         data = json.loads(parameters(case["requestor"]["data"], v_setup, VALUEPOOLS))
 
@@ -282,7 +281,7 @@ class Runner(object):
                 pass
         return True
 
-    def report(self):
+    def report_to_ctr(self):
         count_all = len(GENARATE_RESULT)
         time_ = count_fail = count_success = 0
         for obj in GENARATE_RESULT:

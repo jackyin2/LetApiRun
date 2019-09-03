@@ -93,7 +93,7 @@ def get_params_list_re(obj):
     return l
 
 
-# 当前方法主要用于参数化结果的转化为执行值
+# 当前方法主要用于参数化结果的转化为执行值，如果需要参数化，则参数化后再返回，如果不需要参数化，则直接返回
 def parameters(obj, var, valuepools):
     paramlist = set(get_params_list_re(obj))
     if isinstance(obj, str):

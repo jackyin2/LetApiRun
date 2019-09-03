@@ -7,17 +7,17 @@
        "abc":123,
        "c":3,
        "fun2":"${__get_value(a=1, b=2)}",
-       "username": "jack",
+       "username": "tunicorn",
        "a":"${__get_value(${abc}, ${c})}"
      },
 
      "requestor":{
-        "url": "${host}/telwoy/device-mgr/api/auth/login",
+        "url": "${host}/device-mgr/api/auth/login",
         "method": "POST",
         "headers": {
           "content-type": "application/json"
        },
-     "data": { "username": "${username}", "password": "111111"}
+     "data": { "username": "${username}", "password": "123456"}
      },
 
      "validator": {
