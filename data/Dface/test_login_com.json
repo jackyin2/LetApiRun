@@ -6,18 +6,19 @@
        "success": "${__get_value('success')}",
        "abc":123,
        "c":3,
+       "d":"anc",
        "fun2":"${__get_value(a=1, b=2)}",
-       "username": "tunicorn",
-       "a":"${__get_value(${abc}, ${c})}"
+       "username": "jack2",
+       "a":"${__get_value(${abc}, ${c}, '${d}')}"
      },
 
      "requestor":{
-        "url": "${host}/device-mgr/api/auth/login",
+        "url": "${host}/fosdga/device-mgr/api/auth/login",
         "method": "POST",
         "headers": {
           "content-type": "application/json"
        },
-     "data": { "username": "${username}", "password": "123456"}
+        "data": { "username": "${username}", "password": "111111"}
      },
 
      "validator": {
@@ -28,10 +29,7 @@
      },
 
      "collector":{
-       "json": {"token": "response.data.token"},
-       "methods": {
-         "cookie":"${__collect_value(re, 'headers', 'cookie')}"
-       }
+       "json": {"token": "response.data.token"}
      },
 
      "teardowncase":{

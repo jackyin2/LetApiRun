@@ -68,7 +68,7 @@ class Reportor(object):
     report生成器
     """
     def __init__(self,  report_name, type=None, genarate_result=GENARATE_RESULT):
-        self.template = "E:\jackstudy\LetApiRun\\templeate\\report_template.html"
+        self.template = "./templeate/report_template.html"
         self.genarate_result = genarate_result
         self.report_name = report_name
         self.type = type
@@ -79,13 +79,17 @@ class Reportor(object):
         with open(self.template, 'r', encoding='UTF-8') as f:
             t = f.read()
             tp = Template(t)
-            self.r = tp.render(success=self._count_success(), all=self._count_all(), fail=self._count_failure(), fail_messages=self._get_failure_message())
+            self.r = tp.render(success=self._count_success(), all=self._count_all(), fail=self._count_failure(), fail_messages=self._get_failure_message(), avgtime=self._avg_time(),
+                               maxtime=self._max_time(), mintime=self._min_time())
         return self.r
 
     def _new_report(self):
         print("---report-success---")
-        with open(self.report_name, 'w') as f:
+        with open("./report/"+self.report_name, 'w') as f:
             f.write(self.r)
+
+    def _is_report(self):
+        pass
 
     def _report(self):
         if self.report_name.endswith(self.type):
@@ -106,6 +110,15 @@ class Reportor(object):
     def _get_failure_message(self):
         return [f for f in self.genarate_result if f.result == False]
 
+    def _avg_time(self):
+        return sum([t.time for t in self.genarate_result])/self._count_all()
+
+    def _max_time(self):
+        return max([t.time for t in self.genarate_result])
+
+    def _min_time(self):
+        return min([t.time for t in self.genarate_result])
+
 
 class HtmlReportor(Reportor):
 
@@ -113,6 +126,7 @@ class HtmlReportor(Reportor):
         super(HtmlReportor,self).__init__(report_name, type)
 
     def report(self):
+        print("*********report*******")
         self._report()
 
 

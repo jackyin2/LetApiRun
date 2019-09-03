@@ -9,6 +9,7 @@
 import re
 import json
 import base64
+import os
 
 
 def strclass(cls):
@@ -30,24 +31,24 @@ def reg_str(r, st):
     return False
 
 
+def is_path(path):
+    if os.path.isfile(str(path)) or os.path.isdir(str(path)):
+        return True
+    return False
+
+
+def replace_path(path):
+    if is_path(path):
+        path = path.replace("\\", "/")
+    return path
+
+
 def is_method(str):
     method = re.search("\$\{\_\_(.+)\}", str)
     if method is None:
         return False
     return method.group(1)
 
-
-# 正则匹配方法
-# def match_method(str):
-#     r = re.match("^\$\{\_\_(.*)\}", str)
-#     return r.group(1)
-
-# def match_m_or_v(type, str):
-#     if type == "m":
-#         r = re.match("^\$\{\_\_(.*)\}", str).group(1)
-#     elif type == "v":
-#         r = re.match("^\$\{(.*)\}", str).group(1)
-#     return r
 
 # 是否存在参数化必要
 def is_params(obj):
@@ -103,15 +104,15 @@ def parameters(obj, var, valuepools):
 
     for i in paramlist:
         if valuepools.get(i) is not None:
-            obj = re.sub("\$\{"+str(i)+"\}", str(valuepools[i]), obj)
-
+            # obj = re.sub("\$\{"+str(i)+"\}", str(valuepools[i]), obj)
+            obj = obj.replace("${"+str(i)+"}", str(valuepools[i]))
         elif var.get(i) is not None:
-            obj = re.sub("\$\{"+str(i)+"\}", str(var[i]), obj)
-
+            obj = obj.replace("${"+str(i)+"}", str(var[i]))
+            # obj = re.sub("\$\{"+str(i)+"\}", str(var[i]), obj)
         elif var.get(i) is not None and valuepools.get(i) is not None:
-            obj = re.sub("\$\{" + str(i) + "\}", str(var[i]), obj)
+            obj = obj.replace("${"+str(i)+"}", str(var[i]))
         else:
-            print("var|valuePool中不存在需要的参数")
+            print("var|valuePool中不存在需要的参数{}".format(i))
     return obj
 
 
@@ -121,6 +122,19 @@ def image_2_base64(path):
         base64_data = base64.b64encode(f.read())
         base64_data = str(base64_data, encoding="utf-8")
     return base64_data
+
+
+def image_2_obj(path):
+    """
+    {
+    "field1" : ("filename1", open("filePath1", "rb")),
+    "field2" : ("filename2", open("filePath2", "rb"), "image/jpeg"),
+    "field3" : ("filename3", open("filePath3", "rb"), "image/jpeg", {"refer" :"localhost"})
+    }
+    :param path: 
+    :return: 
+    """
+    pass
 
 
 # image转json

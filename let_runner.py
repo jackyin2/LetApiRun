@@ -18,6 +18,7 @@ from let_utils import *
 from let_assert import assertEqCode, assertEqHeaders, assertEqStr, assertEqJson
 from let_parserconf import ParserConf
 from functools import wraps
+from requests_toolbelt import MultipartEncoder
 
 from addict import Dict
 
@@ -137,10 +138,10 @@ class Runner(object):
                 # 判断当前的方法是否还需要继续参数化，如果需要参数化，则等待后面执行
                 _vals[key] = eval(method)
             elif not method:
-                _vals[key] = val
+                _vals[key] = replace_path(val)
             else:
                 pass
-                
+        # 此处加载方法中带有参数$
         for k, v in vals.items():
             method = is_method(str(v))
             if method and is_params(method):
@@ -155,7 +156,8 @@ class Runner(object):
         method = parameters(case["requestor"]["method"], v_setup, VALUEPOOLS).upper()
         headers = json.loads(parameters(case["requestor"]["headers"], v_setup, VALUEPOOLS))
         data = json.loads(parameters(case["requestor"]["data"], v_setup, VALUEPOOLS))
-
+        if case.get("requestor").get("files"):
+            files = parameters(case["requestor"]["files"], v_setup, VALUEPOOLS)
         # 声明一个结果收集
         apiresult = ApiResult()
         start = time.time()
@@ -165,13 +167,6 @@ class Runner(object):
             if headers["content-type"] == "application/json":
                 try:
                     re = requests.post(url=url, headers=headers, json=data, timeout=2)
-                    # print(re.headers)
-                    # print(re.cookies.get_dict())
-                    # print(re.text)
-                    # print(re.status_code)
-                    # print(re.url)
-                    # print(re.encoding)
-                    # print(re.request)
                 except Exception as e:
                     print("当前url：{}， 响应超时".format(url))
                     re = None
@@ -179,7 +174,8 @@ class Runner(object):
                 finally:
                     pass
             else:
-                re = requests.post(url=url, headers=headers, data=data)
+                re = requests.post(url=url, headers=headers, data=data, files=files)
+                print(re.text)
             # json转换
         elif method == "PUT":
             pass
