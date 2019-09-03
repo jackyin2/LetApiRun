@@ -157,31 +157,34 @@ class Runner(object):
         headers = json.loads(parameters(case["requestor"]["headers"], v_setup, VALUEPOOLS))
         data = json.loads(parameters(case["requestor"]["data"], v_setup, VALUEPOOLS))
         if case.get("requestor").get("files"):
-            files = parameters(case["requestor"]["files"], v_setup, VALUEPOOLS)
+            filedicts = json.loads(parameters(case["requestor"]["files"], v_setup, VALUEPOOLS))
+            _files = {}
+            for filekey, filevalue in filedicts.items():
+                _files[filekey] = image_2_files(replace_path(filevalue))
+
         # 声明一个结果收集
         apiresult = ApiResult()
         start = time.time()
-        if method == "GET":
-            re = requests.get(url, headers=headers)
-        elif method == "POST":
-            if headers["content-type"] == "application/json":
-                try:
+        try:
+            if method == "GET":
+                re = requests.get(url, headers=headers, timeout=2)
+            elif method == "POST":
+                if headers.get("content-type") and headers["content-type"] == "application/json":
                     re = requests.post(url=url, headers=headers, json=data, timeout=2)
-                except Exception as e:
-                    print("当前url：{}， 响应超时".format(url))
-                    re = None
-                    apiresult.error = e
-                finally:
-                    pass
-            else:
-                re = requests.post(url=url, headers=headers, data=data, files=files)
-                print(re.text)
-            # json转换
-        elif method == "PUT":
-            pass
-        elif method == "DELETE":
-            pass
-        elif method == "PATCH":
+                else:
+                    re = requests.post(url=url, headers=headers, data=data, files=_files, timeout=2)
+                # json转换
+            elif method == "PUT":
+                pass
+            elif method == "DELETE":
+                pass
+            elif method == "PATCH":
+                pass
+        except Exception as e:
+            print("当前url：{}， 响应超时".format(url))
+            re = None
+            apiresult.error = e
+        finally:
             pass
         end = time.time()
 

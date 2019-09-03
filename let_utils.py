@@ -143,6 +143,12 @@ def image_2_json(filename, path):
         return (filename, f, 'image/png')
 
 
+def image_2_files(path):
+    if os.path.isfile(str(path)):
+        filename =path.split("/")[-1]
+        return (filename, (open(path, 'rb')))
+
+
 def collect_value(re, tp, str):
     if tp == "headers":
         headers = re.headers

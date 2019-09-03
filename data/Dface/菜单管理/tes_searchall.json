@@ -9,6 +9,7 @@
         "method": "POST",
         "headers": {
           "content-type": "application/json",
+           "content-type": "multipart/form-data; boundary=----AhEsevyQhvNBtVXJ",
           "Authorization": "Bearer ${token}"
         },
      "data": { "dataType": "tree", "permission": true}
