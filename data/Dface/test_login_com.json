@@ -1,7 +1,6 @@
 {
    "test": [{
-     "name": "login_commuity_with_jack",
-
+     "name": "login_commuity_with_jack_中文",
      "setupcase": {
        "success": "${__get_value('success')}",
        "abc":123,

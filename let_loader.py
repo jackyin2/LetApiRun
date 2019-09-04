@@ -47,11 +47,12 @@ class Loader(object):
         :param path: 
         :return: 
         """
-        with open(path, "r") as f:
+        with open(path, "r", encoding="utf-8") as f:
             try:
+                # f_dict = json.load(f).decode(encoding='gbk').encode(encoding='utf-8')
                 f_dict = json.load(f)
             except Exception as e:
-                print("读取的json文件存在错误，文件为：{}".format(path))
+                print("读取的json文件存在错误{}，文件为：{}".format(e, path))
             else:
                 self.cases.append(f_dict)
 

@@ -146,7 +146,7 @@ def image_2_json(filename, path):
 def image_2_files(path):
     if os.path.isfile(str(path)):
         filename =path.split("/")[-1]
-        return (filename, (open(path, 'rb')))
+        return (filename, open(path, 'rb'), "image/jpg")
 
 
 def collect_value(re, tp, str):
