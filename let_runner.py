@@ -156,11 +156,12 @@ class Runner(object):
         method = parameters(case["requestor"]["method"], v_setup, VALUEPOOLS).upper()
         headers = json.loads(parameters(case["requestor"]["headers"], v_setup, VALUEPOOLS))
         data = json.loads(parameters(case["requestor"]["data"], v_setup, VALUEPOOLS))
+        #  此处判断是否存在文件需要处理
         if case.get("requestor").get("files"):
             filedicts = json.loads(parameters(case["requestor"]["files"], v_setup, VALUEPOOLS))
             _files = {}
             for filekey, filevalue in filedicts.items():
-                _files[filekey] = image_2_files(replace_path(filevalue))
+                _files[filekey] = post_files(replace_path(filevalue))
 
         # 声明一个结果收集
         apiresult = ApiResult()
@@ -179,7 +180,8 @@ class Runner(object):
             elif method == "DELETE":
                 pass
             elif method == "PATCH":
-                pass
+                re = requests.patch(url=url, headers=headers, data=data, files=_files, timeout=2)
+
         except Exception as e:
             print("当前url：{}， 响应超时".format(url))
             re = None
@@ -187,7 +189,7 @@ class Runner(object):
         finally:
             pass
         end = time.time()
-
+        print(re.text)
         # 校验器
         if self._valitor(re, case["validator"]):
             apiresult.result = True
@@ -230,18 +232,28 @@ class Runner(object):
         :param vali: 
         :return: 
         """
+        from let_exceptions import *
         if re is None:
             return False
         # 校验成功判断
         count = 0
-        if assertEqCode(re, vali):
-            count += 1
-        if assertEqStr(re, vali):
-            count += 1
-        if assertEqHeaders(re, vali):
-            count += 1
-        if assertEqJson(re, vali):
-            count += 1
+        try:
+            if assertEqCode(re, vali):
+                count += 1
+            if assertEqStr(re, vali):
+                count += 1
+            if assertEqHeaders(re, vali):
+                count += 1
+            if assertEqJson(re, vali):
+                count += 1
+        except NotEqualError as e:
+            print("error:{}".format(e))
+        except JsonError as e:
+            print("error:{}".format(e))
+        else:
+            return False
+
+
         if count == len(vali):
             print("success")
             return True

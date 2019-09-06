@@ -143,10 +143,13 @@ def image_2_json(filename, path):
         return (filename, f, 'image/png')
 
 
-def image_2_files(path):
+def post_files(path):
+    import mimetypes
     if os.path.isfile(str(path)):
         filename =path.split("/")[-1]
-        return (filename, open(path, 'rb'), "image/jpg")
+        mimetype = mimetypes.guess_type(filename)[0]
+        return (filename, open(path, 'rb'), mimetype)
+
 
 
 def collect_value(re, tp, str):

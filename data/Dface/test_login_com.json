@@ -21,8 +21,8 @@
      },
 
      "validator": {
-       "status_code": 200,
-       "headers": {"Content-Type": "application/json;charset=UTF-8"},
+       "assertEqCode": 200,
+       "assertEqHeaders": {"Content-Type": "application/json;charset=UTF-8"},
        "assertEqStr": ["100000"],
        "assertEqJson":{"success":true}
      },

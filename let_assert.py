@@ -8,49 +8,61 @@
 """
 import json
 from let_utils import reg_str
+from let_exceptions import ParseJsonError, NotEqualError, NotJsonError
 
 
 def assertEqCode(r, vali):
-    if vali.get("status_code") is None or r.status_code == vali["status_code"]:
+    if vali.get("assertEqCode") is None or r.status_code == vali["assertEqCode"]:
         return True
-    return False
+    raise NotEqualError(r.status_code, vali["assertEqCode"])
 
 
 def assertEqHeaders(r, vali):
-    if vali.get("headers") is None:
-        return False
+    """
+    判断headers是否一样
+    :param r: 
+    :param vali: 
+    :return: 
+    """
+    if vali.get("assertEqHeaders") is None:
+        pass
     else:
-        n = 0
-        for k, v in vali["headers"].items():
-            if vali["headers"][k] == r.headers[k]:
-                n += 1
-        if n == len(vali["headers"]):
-            return True
-    return False
+        for k, v in vali["assertEqHeaders"].items():
+            if vali["assertEqHeaders"][k] == r.headers[k]:
+                continue
+            else:
+                raise NotEqualError(vali["assertEqHeaders"][k], r.headers[k])
+    return True
 
 
 def assertEqStr(r, vali):
+    """
+    断言关键字字符串是否存在
+    :param r: 
+    :param vali: 
+    :return: 
+    """
     if vali.get("assertEqStr") is None:
-        return False
+        pass
     else:
-        num = 0
         l = vali["assertEqStr"]
         for s in l:
             # 正则search
             if reg_str(s, r.text):
-                num += 1
-        if num == len(l):
-            return True
-    return False
+                continue
+            else:
+                raise NotEqualError(s, r.text)
+    return True
 
 
 def assertEqJson(r, vali):
     if vali.get("assertEqJson") is None:
-        return False
+        return True
     try:
         jt = json.loads(r.text)
     except:
-        print("assertEqJson出错了", end="")
+        raise NotJsonError(r.text)
+
     vl = vali["assertEqJson"]
     m = 0
     for k, v in vl.items():
