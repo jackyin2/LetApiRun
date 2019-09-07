@@ -9,6 +9,8 @@
 import os
 import json
 from let_init import GENARATE_RESULT, VALUEPOOLS
+from let_case import ApiCase
+from let_exceptions import LoadJsonFileError
 
 
 class Loader(object):
@@ -51,10 +53,17 @@ class Loader(object):
             try:
                 # f_dict = json.load(f).decode(encoding='gbk').encode(encoding='utf-8')
                 f_dict = json.load(f)
+                f_name = path.split("\\")[-1]
             except Exception as e:
                 print("读取的json文件存在错误{}，文件为：{}".format(e, path))
+                raise LoadJsonFileError(path)
             else:
-                self.cases.append(f_dict)
+                apicase = ApiCase()
+                print(apicase)
+                apicase.filename = f_name
+                apicase.fileobj = f_dict
+                self.cases.append(apicase)
+                # self.cases.append(f_dict)
 
     def _discover_file_api(self, path):
 

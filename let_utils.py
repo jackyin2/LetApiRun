@@ -10,6 +10,7 @@ import re
 import json
 import base64
 import os
+from let_exceptions import NotFoundParams
 
 
 def strclass(cls):
@@ -113,6 +114,7 @@ def parameters(obj, var, valuepools):
             obj = obj.replace("${"+str(i)+"}", str(var[i]))
         else:
             print("var|valuePool中不存在需要的参数{}".format(i))
+            raise NotFoundParams(i)
     return obj
 
 
@@ -149,7 +151,6 @@ def post_files(path):
         filename =path.split("/")[-1]
         mimetype = mimetypes.guess_type(filename)[0]
         return (filename, open(path, 'rb'), mimetype)
-
 
 
 def collect_value(re, tp, str):

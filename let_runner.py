@@ -17,6 +17,7 @@ from let_result import ApiResult
 from let_utils import *
 from let_assert import assertEqCode, assertEqHeaders, assertEqStr, assertEqJson
 from let_parserconf import ParserConf
+from let_exceptions import *
 from functools import wraps
 from requests_toolbelt import MultipartEncoder
 
@@ -88,7 +89,8 @@ class Runner(object):
         # check loader是否有内容
         if len(self.loader) > 0:
             for test_case in self.loader:
-                cases = test_case["test"]
+                cases = test_case.fileobj["test"]
+                file = test_case.filename
                 # 区分开是存在多用例，还是单用例
                 if type(cases) is list:
                     for case in cases:
@@ -99,7 +101,7 @@ class Runner(object):
                             v = self._setup(case)
                         else:
                             print("---start---no setup---")
-                        self._runapi(case, v)
+                        self._runapi(file, case, v)
                         if case["teardowncase"]:
                             self._teardown(case, v)
                         else:
@@ -110,7 +112,7 @@ class Runner(object):
                         v = self._setup(cases)
                     else:
                         print("---start---no setup---")
-                    self._runapi(cases, v)
+                    self._runapi(file, cases, v)
                     if cases["teardowncase"]:
                         self._teardown(cases, v)
                     else:
@@ -138,6 +140,7 @@ class Runner(object):
                 # 判断当前的方法是否还需要继续参数化，如果需要参数化，则等待后面执行
                 _vals[key] = eval(method)
             elif not method:
+                # 如果不要参数化，判断下是不是路径式字段是则转换
                 _vals[key] = replace_path(val)
             else:
                 pass
@@ -149,13 +152,16 @@ class Runner(object):
                 _vals[k] = eval(method)
         return _vals
 
-    def _runapi(self, case, v_setup):
+    def _runapi(self, file,  case, v_setup):
         print("----api---", end="")
         # 执行api方法, 此处注意返回的parameter是一个字符串，后续需要进行相关处理
-        url = parameters(case["requestor"]["url"], v_setup, VALUEPOOLS)
-        method = parameters(case["requestor"]["method"], v_setup, VALUEPOOLS).upper()
-        headers = json.loads(parameters(case["requestor"]["headers"], v_setup, VALUEPOOLS))
-        data = json.loads(parameters(case["requestor"]["data"], v_setup, VALUEPOOLS))
+        try:
+            url = parameters(case["requestor"]["url"], v_setup, VALUEPOOLS)
+            method = parameters(case["requestor"]["method"], v_setup, VALUEPOOLS).upper()
+            headers = json.loads(parameters(case["requestor"]["headers"], v_setup, VALUEPOOLS))
+            data = json.loads(parameters(case["requestor"]["data"], v_setup, VALUEPOOLS))
+        except NotFoundParams as e:
+            print("error: {}".format(e))
         #  此处判断是否存在文件需要处理
         if case.get("requestor").get("files"):
             filedicts = json.loads(parameters(case["requestor"]["files"], v_setup, VALUEPOOLS))
@@ -181,15 +187,18 @@ class Runner(object):
                 pass
             elif method == "PATCH":
                 re = requests.patch(url=url, headers=headers, data=data, files=_files, timeout=2)
-
         except Exception as e:
-            print("当前url：{}， 响应超时".format(url))
+            print("当前url：{}， 响应超时, {}".format(url, e))
             re = None
             apiresult.error = e
+        except requests.exceptions.ConnectionError:
+            pass
+        except requests.exceptions.Timeout:
+            pass
         finally:
             pass
         end = time.time()
-        print(re.text)
+        # print(re.text)
         # 校验器
         if self._valitor(re, case["validator"]):
             apiresult.result = True
@@ -197,7 +206,7 @@ class Runner(object):
             apiresult.error = "validator---校验字段出错+"
 
         runtime = end - start
-
+        apiresult.file_name = file
         apiresult.api_name = case["name"]
         if re is None:
             apiresult.message = "error"
@@ -232,7 +241,7 @@ class Runner(object):
         :param vali: 
         :return: 
         """
-        from let_exceptions import *
+
         if re is None:
             return False
         # 校验成功判断

@@ -11,8 +11,10 @@
 from jinja2 import Template
 from let_init import GENARATE_RESULT
 
+
 class ApiResult(object):
     def __init__(self):
+        self._file_name = None
         self._api_name = None
         self._result = False
         self._error = ""
@@ -21,6 +23,14 @@ class ApiResult(object):
 
     def append(self, GENARATE_RESULT):
         GENARATE_RESULT.append(self)
+
+    @property
+    def file_name(self):
+        return self._file_name
+
+    @file_name.setter
+    def file_name(self, filename):
+        self._file_name = filename
 
     @property
     def api_name(self):

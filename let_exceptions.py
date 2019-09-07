@@ -20,13 +20,9 @@ class JsonError(MyExcepiton):
     """
     def __init__(self, j=None):
         self.j = j
-    pass
 
 
 class ParseJsonError(JsonError):
-    def __init__(self, j=None):
-        self.j = j
-
     def __str__(self):
         return ("exception：{}, message：parse json {} error ".format(self.__class__.__name__, self.j))
 
@@ -36,6 +32,24 @@ class NotJsonError(JsonError):
         return ("exception：{}, message：{} is not json ".format(self.__class__.__name__, self.j))
 
 
+class LoadJsonFileError(JsonError):
+    def __str__(self):
+        return ("exception：{}, message：from file:{} load api error".format(self.__class__.__name__, self.j))
+
+
+class RequestError(MyExcepiton):
+    def __init__(self, a=None):
+        self.a = a
+
+    def __str__(self):
+        return ("exception：{}, message： {}".format(self.__class__.__name__, self.a))
+
+
+class TimeOutError(RequestError):
+    def __str__(self):
+        return ("exception：{}, request timeout： {}".format(self.__class__.__name__, self.a))
+
+
 class NotEqualError(MyExcepiton):
     def __init__(self, a=None, b=None):
         self.a = a
@@ -43,3 +57,15 @@ class NotEqualError(MyExcepiton):
 
     def __str__(self):
         return ("exception：{}, message： {} != {}".format(self.__class__.__name__, self.a, self.b))
+
+
+class NotHaveMethod():
+    pass
+
+
+class NotFoundParams(MyExcepiton):
+    def __init__(self, p=None):
+        self.p = p
+
+    def __str__(self):
+        return ("exception：{}, not found params： {}".format(self.__class__.__name__, self.p))

@@ -21,11 +21,38 @@ class BaseCase(object):
                (strclass(self.__class__), self._test_name)
 
 
-class ApiCase(BaseCase):
+class ApiCase(object):
 
     def __init__(self):
-        super(ApiCase, self).__init__()
-        self.a = None
+        self._fname = None
+        self._fobj = None
+
+    def __str__(self):
+        return "<%s testApi=%s>" % \
+               (strclass(self.__class__), self._fobj)
+
+    def __repr__(self):
+        return "<%s testApi=%s>" % \
+               (strclass(self.__class__), self._fobj)
+
+    @property
+    def filename(self):
+        return self._fname
+
+    @filename.setter
+    def filename(self, f):
+        self._fname = f
+
+    @property
+    def fileobj(self):
+        return self._fobj
+
+    @fileobj.setter
+    def fileobj(self, f):
+        self._fobj = f
+
+
+
 
 
 

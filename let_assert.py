@@ -58,20 +58,20 @@ def assertEqStr(r, vali):
 def assertEqJson(r, vali):
     if vali.get("assertEqJson") is None:
         return True
+    vl = vali["assertEqJson"]
+    if isinstance(vl, dict):
+        raise NotJsonError(r.text)
     try:
         jt = json.loads(r.text)
     except:
         raise NotJsonError(r.text)
 
-    vl = vali["assertEqJson"]
-    m = 0
     for k, v in vl.items():
         if jt.get(k) is None:
             print("response找不到validator中的的json字段---", end="")
-            return False
-        if vl[k] == jt[k]:
-            m += 1
-    if m == len(vl):
-        return True
-    return False
+        if vl[k] != jt[k]:
+            raise NotEqualError(vl[k], jt[k])
+        else:
+            continue
+    return True
 

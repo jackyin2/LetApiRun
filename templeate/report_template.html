@@ -19,6 +19,7 @@
     <caption>FailMessage List</caption>
     <thead>
     <tr>
+        <th>apifile</th>
         <th>apiname</th>
         <th>message</th>
         <th>result</th>
@@ -45,6 +46,7 @@
     <!--</tr>-->
     {% for m in fail_messages%}
     <tr class="danger">
+        <td>{{ m.file_name }}</td>
         <td>{{ m.api_name }}</td>
         <td>{{ m.message }}</td>
         <td>{{ m.result }}</td>
