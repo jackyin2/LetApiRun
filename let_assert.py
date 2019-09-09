@@ -59,8 +59,8 @@ def assertEqJson(r, vali):
     if vali.get("assertEqJson") is None:
         return True
     vl = vali["assertEqJson"]
-    if isinstance(vl, dict):
-        raise NotJsonError(r.text)
+    if not isinstance(vl, dict):
+        raise NotJsonError(vl)
     try:
         jt = json.loads(r.text)
     except:

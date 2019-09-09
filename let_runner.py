@@ -154,6 +154,7 @@ class Runner(object):
 
     def _runapi(self, file,  case, v_setup):
         print("----api---", end="")
+        apiresult = ApiResult()
         # 执行api方法, 此处注意返回的parameter是一个字符串，后续需要进行相关处理
         try:
             url = parameters(case["requestor"]["url"], v_setup, VALUEPOOLS)
@@ -162,6 +163,7 @@ class Runner(object):
             data = json.loads(parameters(case["requestor"]["data"], v_setup, VALUEPOOLS))
         except NotFoundParams as e:
             print("error: {}".format(e))
+            apiresult.error = "[parms error {}]".format(e)
         #  此处判断是否存在文件需要处理
         if case.get("requestor").get("files"):
             filedicts = json.loads(parameters(case["requestor"]["files"], v_setup, VALUEPOOLS))
@@ -170,8 +172,9 @@ class Runner(object):
                 _files[filekey] = post_files(replace_path(filevalue))
 
         # 声明一个结果收集
-        apiresult = ApiResult()
+
         start = time.time()
+
         try:
             if method == "GET":
                 re = requests.get(url, headers=headers, timeout=2)
@@ -190,35 +193,48 @@ class Runner(object):
         except Exception as e:
             print("当前url：{}， 响应超时, {}".format(url, e))
             re = None
-            apiresult.error = e
+            apiresult.result = False
+            apiresult.error += "[request error: {}]".format(e)
         except requests.exceptions.ConnectionError:
             pass
         except requests.exceptions.Timeout:
             pass
-        finally:
-            pass
         end = time.time()
         # print(re.text)
+
         # 校验器
-        if self._valitor(re, case["validator"]):
-            apiresult.result = True
-        else:
-            apiresult.error = "validator---校验字段出错+"
+        if re is not None:
+            try:
+                validate_params = self._valitor(re, case["validator"])
+            except NotEqualError as e:
+                apiresult.result = False
+                apiresult.error = "[validator error: {}]".format(e)
+                print("error:{}".format(e))
+            except JsonError as e:
+                apiresult.result = False
+                apiresult.error = "[validator error: {}]".format(e)
+                print("error:{}".format(e))
+            else:
+                if validate_params:
+                    apiresult.result = True
 
         runtime = end - start
         apiresult.file_name = file
         apiresult.api_name = case["name"]
-        if re is None:
-            apiresult.message = "error"
-        else:
+        if re is not None:
             apiresult.message = re.text
+        else:
+            apiresult.message = "error"
         apiresult.time = runtime
         apiresult.append(GENARATE_RESULT)
         # del apiresult
 
         # 收集器
-        if not self._collector(re, case["collector"]):
-            apiresult.error += "collector---收集出错"
+        if re is not None:
+            try:
+                self._collector(re, case["collector"])
+            except NotJsonError as e:
+                apiresult.error += "[collector error: {}]".format(e)
 
     def _teardown(self, case, setup):
         """
@@ -246,23 +262,14 @@ class Runner(object):
             return False
         # 校验成功判断
         count = 0
-        try:
-            if assertEqCode(re, vali):
-                count += 1
-            if assertEqStr(re, vali):
-                count += 1
-            if assertEqHeaders(re, vali):
-                count += 1
-            if assertEqJson(re, vali):
-                count += 1
-        except NotEqualError as e:
-            print("error:{}".format(e))
-        except JsonError as e:
-            print("error:{}".format(e))
-        else:
-            return False
-
-
+        if assertEqCode(re, vali):
+            count += 1
+        if assertEqStr(re, vali):
+            count += 1
+        if assertEqHeaders(re, vali):
+            count += 1
+        if assertEqJson(re, vali):
+            count += 1
         if count == len(vali):
             print("success")
             return True
@@ -277,13 +284,13 @@ class Runner(object):
         :param coll: 
         :return: 
         """
-        if re is None:
-            return False
         try:
             response = json.loads(re.text)
         except Exception as e:
             print("解析{}json格式错误,错误信息{}".format(re, e))
-            return False
+            raise NotJsonError(re.text)
+            # return False
+
         response = Dict(response)
         for k, v in coll.items():
             # 此处判断如果是json，则用链式取值，如果是方法，则用正则来进行匹配获取
@@ -299,7 +306,6 @@ class Runner(object):
                         VALUEPOOLS[k2] = eval(is_method(v2))
             else:
                 pass
-        return True
 
     def report_to_ctr(self):
         count_all = len(GENARATE_RESULT)
