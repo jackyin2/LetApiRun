@@ -6,7 +6,8 @@
 
 **使用场景（适用场景简单）：**
 
-http协议 and 前后端分离 and json
+http协议（post， patch） and 前后端分离 and json
+
 
 使用eg：
 ```
@@ -68,3 +69,4 @@ http协议 and 前后端分离 and json
 "collector": 收集器，主要针对将结果中重要信息回收给其他用例使用
 "teardowncase": 回收，主要是销毁setup中的相关内容，减少垃圾
 ```
+
