@@ -9,7 +9,7 @@
 import os
 import json
 from let_init import GENARATE_RESULT, VALUEPOOLS
-from let_case import ApiCase
+from let_case import  ApiCase
 from let_exceptions import LoadJsonFileError
 
 
@@ -39,7 +39,7 @@ class Loader(object):
         :return: 
         """
         # 从目录中加载测试用例
-        files = self._discover_file_api(path)
+        files = self._discover_files(path)
         for file in files:
             self._add_cases(file)
 
@@ -49,24 +49,31 @@ class Loader(object):
         :param path: 
         :return: 
         """
-        with open(path, "r", encoding="utf-8") as f:
+        f_name = path.split("\\")[-1]
+        with open(path, "r", encoding="utf-8") as _f:
             try:
                 # f_dict = json.load(f).decode(encoding='gbk').encode(encoding='utf-8')
-                f_dict = json.load(f)
-                f_name = path.split("\\")[-1]
+                f_dict = json.load(_f)
             except Exception as e:
-                print("读取的json文件存在错误{}，文件为：{}".format(e, path))
-                raise LoadJsonFileError(path)
+                a = ApiCase()
+                # print("读取的json文件存在错误{}，文件为：{}".format(e, path))
+                a.filename = f_name
+                a.request = None
+                a.message = "读取的json文件存在错误{}，文件为：{}".format(e, path)
+                a.result = False
+                self.cases.append(a)
+                # raise LoadJsonFileError(path)
             else:
-                apicase = ApiCase()
-                print(apicase)
-                apicase.filename = f_name
-                apicase.fileobj = f_dict
-                self.cases.append(apicase)
+                if isinstance(f_dict["test"], list):
+                    for i in f_dict["test"]:
+                        a = ApiCase()
+                        a.request = i
+                        a.filename = f_name
+                        a.casename = i["name"]
+                        self.cases.append(a)
                 # self.cases.append(f_dict)
 
-    def _discover_file_api(self, path):
-
+    def _discover_files(self, path):
         """
         查找所有的需要执行测试case文件
         :param path: 

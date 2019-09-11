@@ -88,35 +88,31 @@ class Runner(object):
 
         # check loader是否有内容
         if len(self.loader) > 0:
-            for test_case in self.loader:
-                cases = test_case.fileobj["test"]
-                file = test_case.filename
-                # 区分开是存在多用例，还是单用例
-                if type(cases) is list:
-                    for case in cases:
-                        global count
-                        count += 1
-                        print("*****当前执行第 {} 个 case：{}********".format(count,case["name"]))
-                        if case["setupcase"]:
-                            v = self._setup(case)
-                        else:
-                            print("---start---no setup---")
-                        self._runapi(file, case, v)
-                        if case["teardowncase"]:
-                            self._teardown(case, v)
-                        else:
-                            print("---end---no teardown---")
+            for _case in self.loader:
+                global count
+                count += 1
+
+                # 判断加载的file对象是否为空，如果为空，咋不执行，否则进行请求操作
+                if _case.request is None:
+                    # apiresult = ApiResult()
+                    # test_case.fileresponse = apiresult
+                    print("*****当前执行第 {} 个 case：{}, message: {}********".format(count, _case.request, _case.message))
+                    GENARATE_RESULT.append(_case)
+                    continue
+
+                # 如果testcase不为空，则展示
+                # global count
+                # count += 1
+                print("*****当前执行第 {} 个 case：{}********".format(count, _case.casename))
+                if _case.request["setupcase"]:
+                    v = self._setup(_case)
                 else:
-                    print("*****当前执行的case：{}********".format(cases["name"]))
-                    if cases["setupcase"]:
-                        v = self._setup(cases)
-                    else:
-                        print("---start---no setup---")
-                    self._runapi(file, cases, v)
-                    if cases["teardowncase"]:
-                        self._teardown(cases, v)
-                    else:
-                        print("---end---no teardown---")
+                    print("---start---no setup---")
+                self._runapi(_case, v)
+                if _case.request["teardowncase"]:
+                    self._teardown(_case, v)
+                else:
+                    print("---end---no teardown---")
         else:
             print("当前没有需要执行的用例，请检查是否有错误")
 
@@ -128,7 +124,7 @@ class Runner(object):
         :return: 
         """
         print("---start---setup---", )
-        vals = case["setupcase"]
+        vals = case.request["setupcase"]
         _vals = {}
         # 首先_vals先加载方法中不存在$的方法和正常的值
         for key, val in vals.items():
@@ -152,32 +148,38 @@ class Runner(object):
                 _vals[k] = eval(method)
         return _vals
 
-    def _runapi(self, file,  case, v_setup):
+    def _runapi(self, case, v_setup):
+        """
+        执行api，并判断校验，同时处理收集需要的值
+        :param file: 
+        :param case: 
+        :param v_setup: 
+        :return: 
+        """
         print("----api---", end="")
-        apiresult = ApiResult()
+        # apiresult = ApiResult()
         # 执行api方法, 此处注意返回的parameter是一个字符串，后续需要进行相关处理
         try:
-            url = parameters(case["requestor"]["url"], v_setup, VALUEPOOLS)
-            method = parameters(case["requestor"]["method"], v_setup, VALUEPOOLS).upper()
-            headers = json.loads(parameters(case["requestor"]["headers"], v_setup, VALUEPOOLS))
-            data = json.loads(parameters(case["requestor"]["data"], v_setup, VALUEPOOLS))
+            url = parameters(case.request["requestor"]["url"], v_setup, VALUEPOOLS)
+            method = parameters(case.request["requestor"]["method"], v_setup, VALUEPOOLS).upper()
+            headers = json.loads(parameters(case.request["requestor"]["headers"], v_setup, VALUEPOOLS))
+            data = json.loads(parameters(case.request["requestor"]["data"], v_setup, VALUEPOOLS))
         except NotFoundParams as e:
             print("error: {}".format(e))
-            apiresult.error = "[parms error {}]".format(e)
+            case.message = "[parms error {}]".format(e)
         #  此处判断是否存在文件需要处理
-        if case.get("requestor").get("files"):
-            filedicts = json.loads(parameters(case["requestor"]["files"], v_setup, VALUEPOOLS))
+        if case.request.get("requestor").get("files"):
+            filedicts = json.loads(parameters(case.request["requestor"]["files"], v_setup, VALUEPOOLS))
             _files = {}
             for filekey, filevalue in filedicts.items():
                 _files[filekey] = post_files(replace_path(filevalue))
 
-        # 声明一个结果收集
 
         start = time.time()
 
         try:
             if method == "GET":
-                re = requests.get(url, headers=headers, timeout=2)
+                re = requests.get(url=url, headers=headers, timeout=2)
             elif method == "POST":
                 if headers.get("content-type") and headers["content-type"] == "application/json":
                     re = requests.post(url=url, headers=headers, json=data, timeout=2)
@@ -193,8 +195,8 @@ class Runner(object):
         except Exception as e:
             print("当前url：{}， 响应超时, {}".format(url, e))
             re = None
-            apiresult.result = False
-            apiresult.error += "[request error: {}]".format(e)
+            case.result = False
+            case.message += "[request error: {}]".format(e)
         except requests.exceptions.ConnectionError:
             pass
         except requests.exceptions.Timeout:
@@ -205,36 +207,41 @@ class Runner(object):
         # 校验器
         if re is not None:
             try:
-                validate_params = self._valitor(re, case["validator"])
+                validate_params = self._valitor(re, case.request["validator"])
             except NotEqualError as e:
-                apiresult.result = False
-                apiresult.error = "[validator error: {}]".format(e)
+                case.result = False
+                case.message = "[validator error: {}]".format(e)
+                case.validate = "N"
                 print("error:{}".format(e))
             except JsonError as e:
-                apiresult.result = False
-                apiresult.error = "[validator error: {}]".format(e)
+                case.result = False
+                case.message = "[validator error: {}]".format(e)
+                case.validate = "N"
                 print("error:{}".format(e))
             else:
                 if validate_params:
-                    apiresult.result = True
+                    case.result = True
+                    case.validate = "Y"
 
         runtime = end - start
-        apiresult.file_name = file
-        apiresult.api_name = case["name"]
         if re is not None:
-            apiresult.message = re.text
+            case.response = re.text
         else:
-            apiresult.message = "error"
-        apiresult.time = runtime
-        apiresult.append(GENARATE_RESULT)
+            case.response = "error"
+        case.time = runtime
+        # case.append(GENARATE_RESULT)
+        GENARATE_RESULT.append(case)
         # del apiresult
 
         # 收集器
         if re is not None:
             try:
-                self._collector(re, case["collector"])
+                self._collector(re, case.request["collector"])
             except NotJsonError as e:
-                apiresult.error += "[collector error: {}]".format(e)
+                case.message += "[collector error: {}]".format(e)
+                case.collect = "N"
+            else:
+                case.collect = "Y"
 
     def _teardown(self, case, setup):
         """
@@ -306,6 +313,7 @@ class Runner(object):
                         VALUEPOOLS[k2] = eval(is_method(v2))
             else:
                 pass
+
 
     def report_to_ctr(self):
         count_all = len(GENARATE_RESULT)

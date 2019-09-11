@@ -14,7 +14,7 @@ from let_init import GENARATE_RESULT
 
 class ApiResult(object):
     def __init__(self):
-        self._file_name = None
+        # self._file_name = None
         self._api_name = None
         self._result = False
         self._error = ""
@@ -23,14 +23,6 @@ class ApiResult(object):
 
     def append(self, GENARATE_RESULT):
         GENARATE_RESULT.append(self)
-
-    @property
-    def file_name(self):
-        return self._file_name
-
-    @file_name.setter
-    def file_name(self, filename):
-        self._file_name = filename
 
     @property
     def api_name(self):
@@ -89,8 +81,14 @@ class Reportor(object):
         with open(self.template, 'r', encoding='UTF-8') as f:
             t = f.read()
             tp = Template(t)
-            self.r = tp.render(success=self._count_success(), all=self._count_all(), fail=self._count_failure(), fail_messages=self._get_failure_message(), avgtime=self._avg_time(),
-                               maxtime=self._max_time(), mintime=self._min_time())
+            self.r = tp.render(success=self._count_success(),
+                               all_message = self._get_all_message(),
+                               all=self._count_all(),
+                               fail=self._count_failure(),
+                               fail_messages=self._get_failure_message(),
+                               avgtime=self._avg_time(),
+                               maxtime=self._max_time(),
+                               mintime=self._min_time())
         return self.r
 
     def _new_report(self):
@@ -108,26 +106,37 @@ class Reportor(object):
         else:
             print("当前生成的报告非指定格式{}".format(self.type))
 
+    # 统计所有case总和
     def _count_all(self):
         return len(self.genarate_result)
 
+    # 统计成功的case总和
     def _count_success(self):
         return len([s for s in self.genarate_result if s.result == True])
 
+    # 统计失败的case总和
     def _count_failure(self):
         return len([f for f in self.genarate_result if f.result == False])
 
+    # 展示所有的case记录
+    def _get_all_message(self):
+        return [f for f in self.genarate_result]
+
+    # 获取失败的case记录
     def _get_failure_message(self):
         return [f for f in self.genarate_result if f.result == False]
 
+    # 统计平均响应时间
     def _avg_time(self):
-        return sum([t.time for t in self.genarate_result])/self._count_all()
+        return sum([t.time for t in self.genarate_result if t.result == True])/self._count_success()
 
+    # 统计最大响应时间
     def _max_time(self):
-        return max([t.time for t in self.genarate_result])
+        return max([t.time for t in self.genarate_result if t.result == True])
 
+    # 统计最小响应时间
     def _min_time(self):
-        return min([t.time for t in self.genarate_result])
+        return min([t.time for t in self.genarate_result if t.result == True])
 
 
 class HtmlReportor(Reportor):

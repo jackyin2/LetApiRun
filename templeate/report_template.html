@@ -19,13 +19,13 @@
     <caption>FailMessage List</caption>
     <thead>
     <tr>
-        <th>apifile</th>
-        <th>apiname</th>
-        <th>message</th>
+        <th>filename</th>
+        <th>casename</th>
+        <th>request</th>
+        <th>response</th>
         <th>result</th>
         <th>time</th>
-        <th>error</th>
-
+        <th>message</th>
     </tr>
     </thead>
     <tbody>
@@ -44,15 +44,28 @@
         <!--<td>20/10/2013</td>-->
         <!--<td>待确认</td>-->
     <!--</tr>-->
-    {% for m in fail_messages%}
-    <tr class="danger">
-        <td>{{ m.file_name }}</td>
-        <td>{{ m.api_name }}</td>
-        <td>{{ m.message }}</td>
+    {% for m in all_message%}
+        {% if m.result %}
+    <tr class="success">
+        <td>{{ m.filename }}</td>
+        <td>{{ m.casename }}</td>
+        <td>{{ m.request }}</td>
+        <td>{{ m.response }}</td>
         <td>{{ m.result }}</td>
-        <td>{{m.time}}</td>
-        <td>{{m.error}}</td>
+        <td>{{ m.time }}</td>
+        <td>{{ m.message }}</td>
     </tr>
+        {% else %}
+    <tr class="danger">
+        <td>{{ m.filename }}</td>
+        <td>{{ m.casename }}</td>
+        <td>{{ m.request }}</td>
+        <td>{{ m.response }}</td>
+        <td>{{ m.result }}</td>
+        <td>{{ m.time }}</td>
+        <td>{{ m.message }}</td>
+    </tr>
+        {% endif %}
     {% endfor %}
 
     </tbody>
