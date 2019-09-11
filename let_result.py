@@ -88,12 +88,14 @@ class Reportor(object):
                                fail_messages=self._get_failure_message(),
                                avgtime=self._avg_time(),
                                maxtime=self._max_time(),
-                               mintime=self._min_time())
+                               mintime=self._min_time(),
+                               files_count=self._count_all_files(),
+                               error_count=self._count_error_files())
         return self.r
 
     def _new_report(self):
         print("---report-success---")
-        with open("./report/"+self.report_name, 'w') as f:
+        with open("./report/"+self.report_name, 'w', encoding="utf8") as f:
             f.write(self.r)
 
     def _is_report(self):
@@ -116,7 +118,7 @@ class Reportor(object):
 
     # 统计失败的case总和
     def _count_failure(self):
-        return len([f for f in self.genarate_result if f.result == False])
+        return len([f for f in self.genarate_result if f.result is False and f.request is not None])
 
     # 展示所有的case记录
     def _get_all_message(self):
@@ -137,6 +139,16 @@ class Reportor(object):
     # 统计最小响应时间
     def _min_time(self):
         return min([t.time for t in self.genarate_result if t.result == True])
+
+    def _count_all_files(self):
+        return len(set([s.filename for s in self.genarate_result]))
+
+    def _count_error_files(self):
+        return len([s.filename for s in self.genarate_result if s.request is None])
+
+    def _error_files(self):
+        return [s for s in self.genarate_result if s.request is None]
+
 
 
 class HtmlReportor(Reportor):

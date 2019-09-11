@@ -91,18 +91,11 @@ class Runner(object):
             for _case in self.loader:
                 global count
                 count += 1
-
                 # 判断加载的file对象是否为空，如果为空，咋不执行，否则进行请求操作
                 if _case.request is None:
-                    # apiresult = ApiResult()
-                    # test_case.fileresponse = apiresult
                     print("*****当前执行第 {} 个 case：{}, message: {}********".format(count, _case.request, _case.message))
                     GENARATE_RESULT.append(_case)
                     continue
-
-                # 如果testcase不为空，则展示
-                # global count
-                # count += 1
                 print("*****当前执行第 {} 个 case：{}********".format(count, _case.casename))
                 if _case.request["setupcase"]:
                     v = self._setup(_case)

@@ -1,74 +1,152 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Bootstrap 实例 - 上下文类</title>
     <h1 style="text-align: center">API-Report</h1>
 
     <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!--<script src='https://cdn.bootcss.com/Chart.js/2.7.3/Chart.js'></script>-->
+    <!--<script type="text/javascript" src="./static/echarts.js"></script>-->
+    <!--<script src="./static/echarts.min.js"></script>-->
+    <script src="http://echarts.baidu.com/dist/echarts.min.js"></script>
 </head>
 <body>
-<p><span>Total: {{all}}</span></p>
-<p><span>Success: {{success}}</span></p>
-<p><span>Failure: {{fail}} </span></p>
-<p><span>Avg_Time: {{avgtime}} </span><span>   Max_time: {{maxtime}} </span><span>   Min_Time: {{mintime}} </span></p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <ul class="list-group">
+                <li class="list-group-item"><span>失败文件/总文件个数: </span><span class="label label-primary">{{ error_count }} / {{ files_count }} </span></li>
+                <li class="list-group-item"><span>总用例数: {{all}}</span></li>
+                <li class="list-group-item"><span>成功用例数: {{success}}</span></li>
+                <li class="list-group-item"><span>失败用例个数: {{fail}} </span></li>
+                <li class="list-group-item"><span>平均响应时间: {{avgtime}} </span></li>
+                <li class="list-group-item"><span>最小响应时间: {{mintime}} </span></li>
+                <li class="list-group-item"><span>最大响应时间: {{maxtime}} </span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-5" style="border: 1px;">
+            <div id="main" style="width: 400px;height: 300px;"></div>
+        </div>
+    </div>
 
-<table class="table">
 
-    <caption>FailMessage List</caption>
-    <thead>
-    <tr>
-        <th>filename</th>
-        <th>casename</th>
-        <th>request</th>
-        <th>response</th>
-        <th>result</th>
-        <th>time</th>
-        <th>message</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!--<tr class="active">-->
-        <!--<td>1</td>-->
-        <!--<td>23/11/2013</td>-->
-        <!--<td>ing</td>-->
-    <!--</tr>-->
-    <!--<tr class="success">-->
-        <!--<td>2</td>-->
-        <!--<td>10/11/2013</td>-->
-        <!--<td>om</td>-->
-    <!--</tr>-->
-    <!--<tr class="warning">-->
-        <!--<td>产品3</td>-->
-        <!--<td>20/10/2013</td>-->
-        <!--<td>待确认</td>-->
-    <!--</tr>-->
-    {% for m in all_message%}
-        {% if m.result %}
-    <tr class="success">
-        <td>{{ m.filename }}</td>
-        <td>{{ m.casename }}</td>
-        <td>{{ m.request }}</td>
-        <td>{{ m.response }}</td>
-        <td>{{ m.result }}</td>
-        <td>{{ m.time }}</td>
-        <td>{{ m.message }}</td>
-    </tr>
-        {% else %}
-    <tr class="danger">
-        <td>{{ m.filename }}</td>
-        <td>{{ m.casename }}</td>
-        <td>{{ m.request }}</td>
-        <td>{{ m.response }}</td>
-        <td>{{ m.result }}</td>
-        <td>{{ m.time }}</td>
-        <td>{{ m.message }}</td>
-    </tr>
-        {% endif %}
-    {% endfor %}
+    <div class="row">
+        <table class="table">
 
-    </tbody>
-</table>
+            <caption>API 结果列表</caption>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>所属文件</th>
+                <th>用例名称</th>
+                <th>请求json</th>
+                <th>响应</th>
+                <th>执行结果</th>
+                <th>执行时间</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr class="active">-->
+            <!--<td>1</td>-->
+            <!--<td>23/11/2013</td>-->
+            <!--<td>ing</td>-->
+            <!--</tr>-->
+            <!--<tr class="success">-->
+            <!--<td>2</td>-->
+            <!--<td>10/11/2013</td>-->
+            <!--<td>om</td>-->
+            <!--</tr>-->
+            <!--<tr class="warning">-->
+            <!--<td>产品3</td>-->
+            <!--<td>20/10/2013</td>-->
+            <!--<td>待确认</td>-->
+            <!--</tr>-->
+            {% for m in all_message%}
+            {% if m.result %}
+            <tr class="success">
+                <td>{{ loop.index }}</td>
+                <td>{{ m.filename }}</td>
+                <td>{{ m.casename }}</td>
+                <td>{{ m.request }}</td>
+                <td>{{ m.response }}</td>
+                <td>{{ m.result }}</td>
+                <td>{{ m.time }}</td>
+                <td>{{ m.message }}</td>
+            </tr>
+            {% else %}
+            <tr class="danger">
+                <td>{{ loop.index }}</td>
+                <td>{{ m.filename }}</td>
+                <td>{{ m.casename }}</td>
+                <td>{{ m.request }}</td>
+                <td>{{ m.response }}</td>
+                <td>{{ m.result }}</td>
+                <td>{{ m.time }}</td>
+                <td>{{ m.message }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var success = "{{ success }}";
+    var fail = "{{ fail }}";
+    var error = "{{ error_count }}";
+    // 指定图表的配置项和数据
+    var option_pie = {
+        title: {
+            text: '用例执行情况占比',
+            subtext: '纯属虚构',
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['成功', '失败', '异常']
+        },
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {value: success, name: '成功'},
+                    {value: fail, name: '失败'},
+                    {value: error, name: '异常'}
+
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option_pie);
+</script>
 </body>
 </html>
