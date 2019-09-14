@@ -157,9 +157,10 @@ class Runner(object):
             method = parameters(case.request["requestor"]["method"], v_setup, VALUEPOOLS).upper()
             headers = json.loads(parameters(case.request["requestor"]["headers"], v_setup, VALUEPOOLS))
             data = json.loads(parameters(case.request["requestor"]["data"], v_setup, VALUEPOOLS))
+            params = None
         except NotFoundParams as e:
             print("error: {}".format(e))
-            case.message = "[parms error {}]".format(e)
+            case.message = "[params error {}]\n".format(e)
         #  此处判断是否存在文件需要处理
         if case.request.get("requestor").get("files"):
             filedicts = json.loads(parameters(case.request["requestor"]["files"], v_setup, VALUEPOOLS))
@@ -172,7 +173,7 @@ class Runner(object):
 
         try:
             if method == "GET":
-                re = requests.get(url=url, headers=headers, timeout=2)
+                re = requests.get(url=url, params=data, headers=headers)
             elif method == "POST":
                 if headers.get("content-type") and headers["content-type"] == "application/json":
                     re = requests.post(url=url, headers=headers, json=data, timeout=2)
@@ -189,7 +190,7 @@ class Runner(object):
             print("当前url：{}， 响应超时, {}".format(url, e))
             re = None
             case.result = False
-            case.message += "[request error: {}]".format(e)
+            case.message += "[request error: {}]\n".format(e)
         except requests.exceptions.ConnectionError:
             pass
         except requests.exceptions.Timeout:
@@ -203,12 +204,12 @@ class Runner(object):
                 validate_params = self._valitor(re, case.request["validator"])
             except NotEqualError as e:
                 case.result = False
-                case.message = "[validator error: {}]".format(e)
+                case.message = "[validator error: {}]\n".format(e)
                 case.validate = "N"
                 print("error:{}".format(e))
             except JsonError as e:
                 case.result = False
-                case.message = "[validator error: {}]".format(e)
+                case.message = "[validator error: {}]\n".format(e)
                 case.validate = "N"
                 print("error:{}".format(e))
             else:
@@ -230,8 +231,11 @@ class Runner(object):
         if re is not None:
             try:
                 self._collector(re, case.request["collector"])
-            except NotJsonError as e:
-                case.message += "[collector error: {}]".format(e)
+            except JsonError as e:
+                case.message += "[collector error: {}]\n".format(e)
+                case.collect = "N"
+            except EvalError as e:
+                case.message += "[collector error: {}]\n".format(e)
                 case.collect = "N"
             else:
                 case.collect = "Y"
@@ -297,15 +301,22 @@ class Runner(object):
             if k == "json":
                 for k1,v1 in v.items():
                     # 通过eval直接执行获取对应的json值
-                    v1 = eval(v1)
+                    try:
+                        v1 = eval(v1)
+                    except Exception:
+                        raise EvalError(v1, "Json_collect")
                     VALUEPOOLS[k1] = v1
                     # VALUEPOOLS.update(k1=v1)
             elif k == "methods":
                 for k2, v2 in v.items():
                     if "${__" in str(v2):
-                        VALUEPOOLS[k2] = eval(is_method(v2))
+                        try:
+                            VALUEPOOLS[k2] = eval(is_method(v2))
+                        except Exception:
+                            raise EvalError(is_method(v2), "Method_collect")
             else:
                 pass
+
 
 
     def report_to_ctr(self):

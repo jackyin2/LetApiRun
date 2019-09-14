@@ -14,7 +14,7 @@ from let_exceptions import ParseJsonError, NotEqualError, NotJsonError
 def assertEqCode(r, vali):
     if vali.get("assertEqCode") is None or r.status_code == vali["assertEqCode"]:
         return True
-    raise NotEqualError(r.status_code, vali["assertEqCode"])
+    raise NotEqualError(r.status_code, vali["assertEqCode"], "assertCode")
 
 
 def assertEqHeaders(r, vali):
@@ -31,7 +31,7 @@ def assertEqHeaders(r, vali):
             if vali["assertEqHeaders"][k] == r.headers[k]:
                 continue
             else:
-                raise NotEqualError(vali["assertEqHeaders"][k], r.headers[k])
+                raise NotEqualError(vali["assertEqHeaders"][k], r.headers[k], "assertHeaders")
     return True
 
 
@@ -51,7 +51,7 @@ def assertEqStr(r, vali):
             if reg_str(s, r.text):
                 continue
             else:
-                raise NotEqualError(s, r.text)
+                raise NotEqualError(s, r.text, "assertStr")
     return True
 
 
@@ -70,7 +70,7 @@ def assertEqJson(r, vali):
         if jt.get(k) is None:
             print("response找不到validator中的的json字段---", end="")
         if vl[k] != jt[k]:
-            raise NotEqualError(vl[k], jt[k])
+            raise NotEqualError(vl[k], jt[k], "assertJson")
         else:
             continue
     return True

@@ -130,15 +130,27 @@ class Reportor(object):
 
     # 统计平均响应时间
     def _avg_time(self):
-        return sum([t.time for t in self.genarate_result if t.result == True])/self._count_success()
+        try:
+            avg = sum([t.time for t in self.genarate_result if t.result == True])/self._count_success()
+        except ZeroDivisionError as e:
+            return 0
+        return avg
 
     # 统计最大响应时间
     def _max_time(self):
-        return max([t.time for t in self.genarate_result if t.result == True])
+        try:
+            m = max([t.time for t in self.genarate_result if t.result == True])
+        except ValueError as e:
+            return 0
+        return m
 
     # 统计最小响应时间
     def _min_time(self):
-        return min([t.time for t in self.genarate_result if t.result == True])
+        try:
+            m = min([t.time for t in self.genarate_result if t.result == True])
+        except ValueError:
+            return 0
+        return m
 
     def _count_all_files(self):
         return len(set([s.filename for s in self.genarate_result]))

@@ -51,12 +51,14 @@ class TimeOutError(RequestError):
 
 
 class NotEqualError(MyExcepiton):
-    def __init__(self, a=None, b=None):
+    def __init__(self, a=None, b=None, m=None):
         self.a = a
         self.b = b
+        self.m = m
 
     def __str__(self):
-        return ("exception：{}, message： {} != {}".format(self.__class__.__name__, self.a, self.b))
+        return ("exception：{}, method:{},  message:{} != {}".format(
+            self.__class__.__name__, self.m, self.a, self.b))
 
 
 class NotHaveMethod():
@@ -68,4 +70,16 @@ class NotFoundParams(MyExcepiton):
         self.p = p
 
     def __str__(self):
-        return ("exception：{}, not found params： {}".format(self.__class__.__name__, self.p))
+        return ("exception：{}, message:not found params {}".format(
+            self.__class__.__name__, self.p))
+
+
+class EvalError(MyExcepiton):
+    def __init__(self, p=None, m=None):
+        self.p = p
+        self.m = m
+
+    def __str__(self):
+        return ("exception:{}, method:{}, message:eval {} error".format(
+            self.__class__.__name__, self.m,  self.p))
+
