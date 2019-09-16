@@ -17,15 +17,6 @@ def strclass(cls):
     return "%s.%s" % (cls.__module__, cls.__qualname__)
 
 
-def get_value(*args, **kwargs):
-    return 1
-
-
-# 清理api测试后的参数环境
-def clear_value(args):
-    del(args)
-
-
 def reg_str(r, st):
     if re.search(r, st):
         return True
@@ -34,6 +25,18 @@ def reg_str(r, st):
 
 def is_path(path):
     if os.path.isfile(str(path)) or os.path.isdir(str(path)):
+        return True
+    return False
+
+
+def is_file(path):
+    if os.path.isfile(str(path)):
+        return True
+    return False
+
+
+def is_dir(path):
+    if os.path.isdir(str(path)):
         return True
     return False
 
@@ -162,3 +165,12 @@ def collect_value(re, tp, str):
             pass
     pass
 
+
+# ############################### 自定义扩展函数 ######################################
+
+def get_value(*args, **kwargs):
+    return 1
+
+# 清理api测试后的参数环境
+def clear_value(args):
+    del(args)

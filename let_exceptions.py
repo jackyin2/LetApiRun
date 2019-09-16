@@ -57,7 +57,7 @@ class NotEqualError(MyExcepiton):
         self.m = m
 
     def __str__(self):
-        return ("exception：{}, method:{},  message:{} != {}".format(
+        return ("exception：{}, method:{},  message:{} not in {}".format(
             self.__class__.__name__, self.m, self.a, self.b))
 
 

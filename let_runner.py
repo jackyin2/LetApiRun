@@ -43,12 +43,11 @@ def start_end_decorator(f):
 
 
 class Runner(object):
-    def __init__(self, path=None, file=None, report=None):
+    def __init__(self, path=None, file=None, init_conf=None):
         self.test_dir = path
         self.test_api = file
-        self.report_path = report
         self.loader = Loader()
-        self.init_variable()
+        self.init_conf = init_conf
 
     def loader_file(self):
         # 执行单个api
@@ -76,17 +75,19 @@ class Runner(object):
             break
 
     def run(self):
-        # 判断是单文件执行还是批量执行
-        if self.test_dir is None and self.test_api is not None:
-            self.loader_file()
-        elif self.test_dir is not None and self.test_api is None:
+
+        # 1 判断是否需要初始化配置
+        if self.init_conf:
+            self.init_variable()
+        # 2 判断是单文件执行还是批量执行
+        if self.test_dir is not None and self.test_api is None:
             self.loader_dir()
         elif self.test_dir is not None and self.test_api is not None:
-            print("不允许path和file同时存在")
-        elif self.test_dir is not None and self.test_api is not None:
-            print("path和file不允许同时为空")
-
-        # check loader是否有内容
+            self.loader_file()
+        elif self.test_dir is None and self.test_api is None:
+            print("请检查你是否未填写path和file")
+            exit(0)
+        # 3 check loader是否有内容
         if len(self.loader) > 0:
             for _case in self.loader:
                 global count
@@ -116,7 +117,7 @@ class Runner(object):
         :param case: 
         :return: 
         """
-        print("---start---setup---", )
+        print("1: start---setup", )
         vals = case.request["setupcase"]
         _vals = {}
         # 首先_vals先加载方法中不存在$的方法和正常的值
@@ -149,7 +150,7 @@ class Runner(object):
         :param v_setup: 
         :return: 
         """
-        print("----api---", end="")
+        print("2: api > ", end="")
         # apiresult = ApiResult()
         # 执行api方法, 此处注意返回的parameter是一个字符串，后续需要进行相关处理
         try:
@@ -233,9 +234,11 @@ class Runner(object):
                 self._collector(re, case.request["collector"])
             except JsonError as e:
                 case.message += "[collector error: {}]\n".format(e)
+                print("error: {}".format(e))
                 case.collect = "N"
             except EvalError as e:
                 case.message += "[collector error: {}]\n".format(e)
+                print("error: {}".format(e))
                 case.collect = "N"
             else:
                 case.collect = "Y"
@@ -249,9 +252,11 @@ class Runner(object):
         """
         if len(setup) > 0:
             clear_value(setup)
-            print("---end---teardown---")
+            print("3: end---teardown")
+            print()
         else:
-            print("---end---no-teardown")
+            print("3: end---no-teardown")
+            print()
         return
 
     def _valitor(self, re, vali):
@@ -316,8 +321,6 @@ class Runner(object):
                             raise EvalError(is_method(v2), "Method_collect")
             else:
                 pass
-
-
 
     def report_to_ctr(self):
         count_all = len(GENARATE_RESULT)

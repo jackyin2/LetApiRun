@@ -7,7 +7,7 @@
 @Des   :
 """
 
-
+import time, datetime
 from jinja2 import Template
 from let_init import GENARATE_RESULT
 
@@ -69,15 +69,24 @@ class Reportor(object):
     """
     report生成器
     """
-    def __init__(self,  report_name, type=None, genarate_result=GENARATE_RESULT):
+    def __init__(self,  report_name=None, type=None, genarate_result=GENARATE_RESULT):
         self.template = "./templeate/report_template.html"
         self.genarate_result = genarate_result
-        self.report_name = report_name
+        if report_name is None:
+            self.report_name = self._make_report_name()
+        else:
+            self.report_name = report_name
         self.type = type
         self.r = None
 
+    def _make_report_name(self):
+        now = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(time.time()))
+        # reportpath1 = os.path.abspath(os.path.join(os.getcwd(), '..\\report'))
+        report_name = "Api_test_report" + now + ".html"
+        return report_name
+
     def _read_template(self):
-        print("---read_report---")
+        print("1： read_report")
         with open(self.template, 'r', encoding='UTF-8') as f:
             t = f.read()
             tp = Template(t)
@@ -94,7 +103,7 @@ class Reportor(object):
         return self.r
 
     def _new_report(self):
-        print("---report-success---")
+        print("2： report-success")
         with open("./report/"+self.report_name, 'w', encoding="utf8") as f:
             f.write(self.r)
 
@@ -165,7 +174,7 @@ class Reportor(object):
 
 class HtmlReportor(Reportor):
 
-    def __init__(self, report_name, type):
+    def __init__(self, report_name, type="html"):
         super(HtmlReportor,self).__init__(report_name, type)
 
     def report(self):
