@@ -95,18 +95,34 @@ class Runner(object):
                 # 判断加载的file对象是否为空，如果为空，咋不执行，否则进行请求操作
                 if _case.request is None:
                     print("*****当前执行第 {} 个 case：{}, message: {}********".format(count, _case.request, _case.message))
+                    _case.result = False
+                    _case.validate = "N"
+                    _case.collect = "N"
+                    _case.response = "error"
+                    _case.time = 0
                     GENARATE_RESULT.append(_case)
                     continue
                 print("*****当前执行第 {} 个 case：{}********".format(count, _case.casename))
-                if _case.request["setupcase"]:
-                    v = self._setup(_case)
-                else:
-                    print("---start---no setup---")
-                self._runapi(_case, v)
-                if _case.request["teardowncase"]:
-                    self._teardown(_case, v)
-                else:
-                    print("---end---no teardown---")
+                try:
+                    # 1 初始化准备
+                    if _case.request["setupcase"]:
+                        v = self._setup(_case)
+                    else:
+                        print("1：start---no setup")
+
+                    # 2 执行api
+                    self._runapi(_case, v)
+
+                    # 3 结果收尾
+                    if _case.request["teardowncase"]:
+                        self._teardown(_case, v)
+                    else:
+                        print("3: end---no teardown")
+                        print()
+                except ParamsError:
+                    print("3: end---no teardown")
+                    print()
+                    continue
         else:
             print("当前没有需要执行的用例，请检查是否有错误")
 
@@ -158,17 +174,25 @@ class Runner(object):
             method = parameters(case.request["requestor"]["method"], v_setup, VALUEPOOLS).upper()
             headers = json.loads(parameters(case.request["requestor"]["headers"], v_setup, VALUEPOOLS))
             data = json.loads(parameters(case.request["requestor"]["data"], v_setup, VALUEPOOLS))
-            params = None
         except NotFoundParams as e:
             print("error: {}".format(e))
             case.message = "[params error {}]\n".format(e)
+            case.result = False
+            case.validate = "N"
+            case.collect = "N"
+            case.response = "error"
+            case.time = 0
+            GENARATE_RESULT.append(case)
+            raise ParamsError
+
         #  此处判断是否存在文件需要处理
         if case.request.get("requestor").get("files"):
             filedicts = json.loads(parameters(case.request["requestor"]["files"], v_setup, VALUEPOOLS))
             _files = {}
             for filekey, filevalue in filedicts.items():
                 _files[filekey] = post_files(replace_path(filevalue))
-
+        else:
+            _files = None
 
         start = time.time()
 
@@ -176,21 +200,23 @@ class Runner(object):
             if method == "GET":
                 re = requests.get(url=url, params=data, headers=headers)
             elif method == "POST":
-                if headers.get("content-type") and headers["content-type"] == "application/json":
+                if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
                     re = requests.post(url=url, headers=headers, json=data, timeout=2)
                 else:
                     re = requests.post(url=url, headers=headers, data=data, files=_files, timeout=2)
                 # json转换
             elif method == "PUT":
-                pass
+                re = requests.put(url=url, headers=headers, json=data, files=_files, timeout=2)
             elif method == "DELETE":
-                pass
+                re = requests.delete(url=url, headers=headers, timeout=2)
             elif method == "PATCH":
                 re = requests.patch(url=url, headers=headers, data=data, files=_files, timeout=2)
         except Exception as e:
             print("当前url：{}， 响应超时, {}".format(url, e))
             re = None
             case.result = False
+            case.validate = "N"
+            case.collect = "N"
             case.message += "[request error: {}]\n".format(e)
         except requests.exceptions.ConnectionError:
             pass
@@ -217,8 +243,11 @@ class Runner(object):
                 if validate_params:
                     case.result = True
                     case.validate = "Y"
+                else:
+                    case.result = False
+                    case.validate = "N"
 
-        runtime = end - start
+        runtime = round((end-start), 4)
         if re is not None:
             case.response = re.text
         else:
@@ -231,7 +260,7 @@ class Runner(object):
         # 收集器
         if re is not None:
             try:
-                self._collector(re, case.request["collector"])
+                self._collector(re, case.request["collector"], v_setup)
             except JsonError as e:
                 case.message += "[collector error: {}]\n".format(e)
                 print("error: {}".format(e))
@@ -243,15 +272,15 @@ class Runner(object):
             else:
                 case.collect = "Y"
 
-    def _teardown(self, case, setup):
+    def _teardown(self, case, v_setup):
         """
         清理当前case中的预条件setupcase中的内容，
         :param case: 
-        :param setup: 
+        :param v_setup: 
         :return: 
         """
-        if len(setup) > 0:
-            clear_value(setup)
+        if len(v_setup) > 0:
+            clear_value(v_setup)
             print("3: end---teardown")
             print()
         else:
@@ -279,14 +308,14 @@ class Runner(object):
             count += 1
         if assertEqJson(re, vali):
             count += 1
-        if count == len(vali):
+        if count >= len(vali):
             print("success")
             return True
         if count < len(vali):
             print("fail")
         return False
 
-    def _collector(self, re, coll):
+    def _collector(self, re, coll, v_setup):
         """
         收集器，回收一个公共参数，比如获取token后期使用，直接通过
         :param re: 
@@ -304,7 +333,7 @@ class Runner(object):
         for k, v in coll.items():
             # 此处判断如果是json，则用链式取值，如果是方法，则用正则来进行匹配获取
             if k == "json":
-                for k1,v1 in v.items():
+                for k1, v1 in v.items():
                     # 通过eval直接执行获取对应的json值
                     try:
                         v1 = eval(v1)
@@ -314,11 +343,14 @@ class Runner(object):
                     # VALUEPOOLS.update(k1=v1)
             elif k == "methods":
                 for k2, v2 in v.items():
-                    if "${__" in str(v2):
-                        try:
-                            VALUEPOOLS[k2] = eval(is_method(v2))
-                        except Exception:
-                            raise EvalError(is_method(v2), "Method_collect")
+                    method = is_method(str(v2))
+                    # 判断方法中是否还存在入参的参数化
+                    if method and is_params(method):
+                        method = parameters(method, v_setup, VALUEPOOLS)
+                    try:
+                        VALUEPOOLS[k2] = eval(method)
+                    except Exception:
+                        raise EvalError(method, "Method_collect")
             else:
                 pass
 

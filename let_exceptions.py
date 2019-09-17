@@ -57,11 +57,15 @@ class NotEqualError(MyExcepiton):
         self.m = m
 
     def __str__(self):
-        return ("exception：{}, method:{},  message:{} not in {}".format(
+        return ("exception：{}, method:{},  message:{} not equals or contral {}".format(
             self.__class__.__name__, self.m, self.a, self.b))
 
 
 class NotHaveMethod():
+    pass
+
+
+class ParamsError(MyExcepiton):
     pass
 
 

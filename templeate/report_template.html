@@ -38,7 +38,6 @@
 
     <div class="row">
         <table class="table">
-
             <caption>API 结果列表</caption>
             <thead>
             <tr>
@@ -49,47 +48,48 @@
                 <th>响应</th>
                 <th>执行结果</th>
                 <th>执行时间</th>
+                <th>校验结果</th>
+                <th>收集结果</th>
                 <th>备注</th>
             </tr>
             </thead>
             <tbody>
-            <!--<tr class="active">-->
-            <!--<td>1</td>-->
-            <!--<td>23/11/2013</td>-->
-            <!--<td>ing</td>-->
-            <!--</tr>-->
+            <!--<tr class="active">--
             <!--<tr class="success">-->
-            <!--<td>2</td>-->
-            <!--<td>10/11/2013</td>-->
-            <!--<td>om</td>-->
-            <!--</tr>-->
             <!--<tr class="warning">-->
-            <!--<td>产品3</td>-->
-            <!--<td>20/10/2013</td>-->
-            <!--<td>待确认</td>-->
-            <!--</tr>-->
+
             {% for m in all_message%}
             {% if m.result %}
             <tr class="success">
                 <td>{{ loop.index }}</td>
                 <td>{{ m.filename }}</td>
                 <td>{{ m.casename }}</td>
-                <td>{{ m.request }}</td>
-                <td>{{ m.response }}</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{{ m.request|e }}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{{ m.response|e }}" style="color: coral">查看返回</a></td>
                 <td>{{ m.result }}</td>
                 <td>{{ m.time }}</td>
-                <td>{{ m.message }}</td>
+                <td>{{ m.validate }}</td>
+                <td>{{ m.collect }}</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{{ m.message|e }}" style="color: coral">查看备注</a></td>
             </tr>
             {% else %}
             <tr class="danger">
                 <td>{{ loop.index }}</td>
                 <td>{{ m.filename }}</td>
                 <td>{{ m.casename }}</td>
-                <td>{{ m.request }}</td>
-                <td>{{ m.response }}</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{{ m.request|e }}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{{ m.response|e }}" style="color: coral">查看返回</a></td>
                 <td>{{ m.result }}</td>
                 <td>{{ m.time }}</td>
-                <td>{{ m.message }}</td>
+                 <td>{{ m.validate }}</td>
+                <td>{{ m.collect }}</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{{ m.message|e }}" style="color: coral">查看备注</a></td>
             </tr>
             {% endif %}
             {% endfor %}
@@ -147,6 +147,11 @@
 
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option_pie);
+</script>
+<script>
+    $(function () {
+	$("[data-toggle='popover']").popover();
+});
 </script>
 </body>
 </html>

@@ -9,8 +9,11 @@
 import re
 import json
 import base64
+import pymysql
 import os
+import random
 from let_exceptions import NotFoundParams
+from let_parserconf import ParserConf
 
 
 def strclass(cls):
@@ -30,7 +33,7 @@ def is_path(path):
 
 
 def is_file(path):
-    if os.path.isfile(str(path)):
+    if os.path.isfile(str(path)) or path is None:
         return True
     return False
 
@@ -171,6 +174,67 @@ def collect_value(re, tp, str):
 def get_value(*args, **kwargs):
     return 1
 
+
 # 清理api测试后的参数环境
 def clear_value(args):
     del(args)
+
+
+# 随机生成数字
+def get_random_num(min, max, len=None):
+    if len is None:
+        result = random.randint(min, max)
+    else:
+        result = random.randrange(min, max, len)
+    return result
+
+
+# 随机生成字符串
+def get_random_str(str, num=None):
+    if num is None:
+        result = random.choice(str)
+    else:
+        result = random.sample(str, num)
+    return result
+
+
+# ############################### 数据库相关扩展函数 ####################################
+
+
+def sql_select(sql, path,  db=1):
+    pc = ParserConf(path)
+    if db == 1:
+        conf = {
+            "host": pc.get_item("DB1", "host"),
+            "port": pc.get_int_item("DB1", "port"),
+            "user": pc.get_item("DB1", "user"),
+            "password": pc.get_item("DB1", "password"),
+            "db": pc.get_item("DB1", "db"),
+            "charset": pc.get_item("DB1", "charset")
+        }
+    elif db == 2:
+        conf = {
+            "host": pc.get_item("DB2", "host"),
+            "port": pc.get_int_item("DB2", "port"),
+            "user": pc.get_item("DB2", "user"),
+            "password": pc.get_item("DB2", "password"),
+            "db": pc.get_item("DB2", "db"),
+            "charset": pc.get_item("DB1", "charset")
+        }
+    try:
+        conn = pymysql.connect(**conf)
+        cursor = conn.cursor()
+        rows = cursor.execute(sql)
+        result = cursor.fetchone()
+    except Exception as e:
+        print("sql执行错误,请检查sql exception: {}".format(e))
+    cursor.close()
+    conn.close()
+    return result[0]
+
+def sql_update():
+    pass
+
+
+
+

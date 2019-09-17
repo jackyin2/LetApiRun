@@ -26,10 +26,13 @@ class ParserConf(object):
     def get_item(self, sec, opt):
         return self.c.get(sec, opt)
 
+    def get_int_item(self, sec, opt):
+        return self.c.getint(sec, opt)
+
     def conf_2_valuepool(self, valuepool):
         if len(self.sections()):
             for i in self.sections():
-                if len(self.options(i)):
+                if len(self.options(i)) and i == "INIT":
                     for j in self.options(i):
                         valuepool[j] = self.get_item(i, j)
                 else:
