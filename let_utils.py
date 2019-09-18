@@ -182,6 +182,13 @@ def clear_value(args):
 
 # 随机生成数字
 def get_random_num(min, max, len=None):
+    """
+    随机生成数字，在mix到max之间的任意数字
+    :param min: 最小开始数字
+    :param max: 最大结束数字
+    :param len: 间隔多少取值
+    :return: 数字
+    """
     if len is None:
         result = random.randint(min, max)
     else:
@@ -191,6 +198,12 @@ def get_random_num(min, max, len=None):
 
 # 随机生成字符串
 def get_random_str(str, num=None):
+    """
+    随机生成字符串，在str中任意生成字符串
+    :param str: 字符串
+    :param num: 字符长度
+    :return: 特定字符长度的随机字符串
+    """
     if num is None:
         result = random.choice(str)
     else:
@@ -202,6 +215,13 @@ def get_random_str(str, num=None):
 
 
 def sql_select(sql, path,  db=1):
+    """
+    从数据库中获取需要的值，目前仅支持返回单个值
+    :param sql: 数据库执行的sql语句
+    :param path: 获取数据库的链接配置
+    :param db: 选择
+    :return: 
+    """
     pc = ParserConf(path)
     if db == 1:
         conf = {
@@ -232,8 +252,7 @@ def sql_select(sql, path,  db=1):
     conn.close()
     return result[0]
 
-def sql_update():
-    pass
+
 
 
 
