@@ -97,10 +97,12 @@ case编写注意事项：
 3. setupcase中，入参需要参数化的方法，如果入参是一个str类型，那么需要加上单引号
 
 4. 项目结构必须按照：
-
     ![Image 项目结构](./templeate/static/QQ截图20190917101143.jpg)
-    
+
+5. 用例命名规范 可参考unittest的方式，test_id_method_desc_other.json
+
 暂不支持：
+
 ```
 1. 缺少log文件的输出，只能通过控制台查看执行过程
 ```

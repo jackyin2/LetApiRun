@@ -22,7 +22,7 @@ def main(path=None, file=None, init_conf=1, report_name=None):
     """
     runer = Runner(path=path, file=file, init_conf=init_conf)
     runer.run()
-    # runer.report_to_ctr()
+    runer.report_to_ctr()
     report = HtmlReportor(report_name=report_name)
     report.report()
 
@@ -37,7 +37,6 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="这是一款测试api的小框架，具有参数化，异常定位等特性")
-
     parser.add_argument("-d", "--dir", help="测试目录", type=str)
     parser.add_argument("-f", "--file", help="测试文件", type=str, default=None)
     parser.add_argument("-c", "--conf", help="初始化配置文件,默认加载, 不加载设置为0", type=int, default=1)
@@ -47,7 +46,6 @@ if __name__ == "__main__":
     if not is_dir(args.dir):
         print("is not a true dir ,please check! ")
         exit(0)
-
     elif not is_file(args.file):
         print("is not a true file ,please check! ")
         exit(0)
