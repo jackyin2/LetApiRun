@@ -201,12 +201,15 @@ class Runner(object):
                 re = requests.get(url=url, params=data, headers=headers)
             elif method == "POST":
                 if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
-                    re = requests.post(url=url, headers=headers, json=data, timeout=2)
+                    re = requests.post(url=url, headers=headers, json=data,files=_files, timeout=2)
                 else:
                     re = requests.post(url=url, headers=headers, data=data, files=_files, timeout=2)
                 # json转换
             elif method == "PUT":
-                re = requests.put(url=url, headers=headers, json=data, files=_files, timeout=2)
+                if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
+                    re = requests.put(url=url, headers=headers, json=data,files=_files, timeout=2)
+                else:
+                    re = requests.put(url=url, headers=headers, data=data, files=_files, timeout=2)
             elif method == "DELETE":
                 re = requests.delete(url=url, headers=headers, timeout=2)
             elif method == "PATCH":
