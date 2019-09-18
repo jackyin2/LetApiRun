@@ -9,7 +9,7 @@
 import os
 import json
 from let_init import GENARATE_RESULT, VALUEPOOLS
-from let_case import  ApiCase
+from let_case import ApiCase
 from let_exceptions import LoadJsonFileError
 
 

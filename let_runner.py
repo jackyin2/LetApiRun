@@ -116,6 +116,8 @@ class Runner(object):
                     # 3 结果收尾
                     if _case.request["teardowncase"]:
                         self._teardown(_case, v)
+                        print("3: end---teardown")
+                        print()
                     else:
                         print("3: end---no teardown")
                         print()
@@ -130,13 +132,18 @@ class Runner(object):
         """
         setup 需要注意，在填写相关的部分时，必须按照正常kv，方法kv，方法参数kv的顺序填写，不允许乱序，
         否则会出现参数化失败的情况
+        eg：  
+            "a" : 1,
+            "b" : "str"
+            "m1" : "${__method(a,b)}",
+            "m2" : "${__method(a, ${a}, '${b}')}"
         :param case: 
         :return: 
         """
         print("1: start---setup", )
         vals = case.request["setupcase"]
         _vals = {}
-        # 首先_vals先加载方法中不存在$的方法和正常的值
+        # 1 首先_vals先加载方法中不存在$的方法和正常的值
         for key, val in vals.items():
             # 判断是否是一个待执行的方法，
             method = is_method(str(val))
@@ -146,11 +153,19 @@ class Runner(object):
                 # 判断当前的方法是否还需要继续参数化，如果需要参数化，则等待后面执行
                 _vals[key] = eval(method)
             elif not method:
+                if is_params(str(val)):
+                    continue
                 # 如果不要参数化，判断下是不是路径式字段是则转换
                 _vals[key] = replace_path(val)
-            else:
-                pass
-        # 此处加载方法中带有参数$
+
+        # 2 加载非方法内的字符串参数化
+        for k1, v1 in vals.items():
+            method = is_method(str(v1))
+            if not method and is_params(str(v1)):
+                v1 = parameters(v1, _vals, VALUEPOOLS)
+                _vals[k1] = v1
+
+        # 此处加载方法中带有参数$ 和 字符串中带有$
         for k, v in vals.items():
             method = is_method(str(v))
             if method and is_params(method):
@@ -284,11 +299,6 @@ class Runner(object):
         """
         if len(v_setup) > 0:
             clear_value(v_setup)
-            print("3: end---teardown")
-            print()
-        else:
-            print("3: end---no-teardown")
-            print()
         return
 
     def _valitor(self, re, vali):
