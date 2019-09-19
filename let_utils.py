@@ -103,26 +103,77 @@ def get_params_list_re(obj):
 
 # 当前方法主要用于参数化结果的转化为执行值，如果需要参数化，则参数化后再返回，如果不需要参数化，则直接返回
 def parameters(obj, var, valuepools):
+    # 判断如果传值是str对象，那么替换时候不需要eval，直接replace替换
+    if isinstance(obj, str):
+        paramlist = set(get_params_list_re(obj))
+        for i in paramlist:
+            r_str = "${" + str(i) + "}"
+            if valuepools.get(i) is not None:
+                obj = obj.replace(r_str, str(valuepools[i]))
+            elif var.get(i) is not None:
+                if type(var[i]) in [int, float, dict, tuple, list]:
+                    if len(str(i)) == len(obj) - 3:
+                        obj = eval(obj.replace(r_str, str(var[i])))
+                    else:
+                        obj = obj.replace(r_str, str(var[i]))
+                else:
+                    obj = obj.replace(r_str, str(var[i]))
+                # obj = obj.replace(r_str, str(var[i]))
+            elif var.get(i) is not None and valuepools.get(i) is not None:
+                obj = obj.replace(r_str, str(var[i]))
+            else:
+                print("var|valuePool中不存在需要的参数{}".format(i))
+                raise NotFoundParams(i)
+    elif isinstance(obj, list):
+        l = 0
+        for o in obj:
+            o = parameters(o, var, valuepools)
+            obj[l] = o
+            l += 1
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            v = parameters(v, var, valuepools)
+            obj[k] = v
+
+            #     r_str = "${" + str(i) + "}"
+            #     if valuepools.get(i) is not None:
+            #         v = v.replace(r_str, str(valuepools[i]))
+            #     elif var.get(i) is not None:
+            #         if type(var[i]) in [int, float]:
+            #             if len(str(i)) == len(v) - 3:
+            #                 v = eval(v.replace(r_str, str(var[i])))
+            #             else:
+            #                 v = v.replace(r_str, str(var[i]))
+            #         else:
+            #             v = v.replace(r_str, str(var[i]))
+            #     elif var.get(i) is not None and valuepools.get(i) is not None:
+            #         v = v.replace(r_str, str(var[i]))
+            #     else:
+            #         print("var|valuePool中不存在需要的参数{}".format(i))
+            #         raise NotFoundParams(i)
+
+    return obj
+
+
+def parameters_bak(obj, var, valuepools):
     paramlist = set(get_params_list_re(obj))
     if isinstance(obj, str):
         pass
     elif isinstance(obj, dict):
         obj = json.dumps(obj)
-
     for i in paramlist:
+        r_str = "${" + str(i) + "}"
         if valuepools.get(i) is not None:
             # obj = re.sub("\$\{"+str(i)+"\}", str(valuepools[i]), obj)
-            obj = obj.replace("${"+str(i)+"}", str(valuepools[i]))
+            obj = obj.replace(r_str, str(valuepools[i]))
         elif var.get(i) is not None:
-            obj = obj.replace("${"+str(i)+"}", str(var[i]))
-            # obj = re.sub("\$\{"+str(i)+"\}", str(var[i]), obj)
+            obj = obj.replace(r_str, str(var[i]))
         elif var.get(i) is not None and valuepools.get(i) is not None:
-            obj = obj.replace("${"+str(i)+"}", str(var[i]))
+            obj = obj.replace(r_str, str(var[i]))
         else:
             print("var|valuePool中不存在需要的参数{}".format(i))
             raise NotFoundParams(i)
     return obj
-
 
 # image转base64方法
 def image_2_base64(path):

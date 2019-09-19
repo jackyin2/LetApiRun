@@ -187,8 +187,8 @@ class Runner(object):
         try:
             url = parameters(case.request["requestor"]["url"], v_setup, VALUEPOOLS)
             method = parameters(case.request["requestor"]["method"], v_setup, VALUEPOOLS).upper()
-            headers = json.loads(parameters(case.request["requestor"]["headers"], v_setup, VALUEPOOLS))
-            data = json.loads(parameters(case.request["requestor"]["data"], v_setup, VALUEPOOLS))
+            headers = parameters(case.request["requestor"]["headers"], v_setup, VALUEPOOLS)
+            data = parameters(case.request["requestor"]["data"], v_setup, VALUEPOOLS)
         except NotFoundParams as e:
             print("error: {}".format(e))
             case.message = "[params error {}]\n".format(e)
