@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Bootstrap 实例 - 上下文类</title>
+    <h1 style="text-align: center">API-Report</h1>
+
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://echarts.baidu.com/dist/echarts.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <ul class="list-group">
+                <li class="list-group-item"><span>失败文件/总文件个数: </span><span class="label label-primary">1 / 20 </span></li>
+                <li class="list-group-item"><span>总用例数: 22</span></li>
+                <li class="list-group-item"><span>成功用例数: 10</span></li>
+                <li class="list-group-item"><span>失败用例个数: 11 </span></li>
+                <li class="list-group-item"><span>平均响应时间: 0.11030000000000002 </span></li>
+                <li class="list-group-item"><span>最小响应时间: 0.0269 </span></li>
+                <li class="list-group-item"><span>最大响应时间: 0.389 </span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-5" style="border: 1px;">
+            <div id="main" style="width: 400px;height: 300px;"></div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <table class="table">
+            <caption>API 结果列表</caption>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>所属文件</th>
+                <th>用例名称</th>
+                <th>请求json</th>
+                <th>响应</th>
+                <th>执行结果</th>
+                <th>执行时间</th>
+                <th>校验结果</th>
+                <th>收集结果</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr class="active">--
+            <!--<tr class="success">-->
+            <!--<tr class="warning">-->
+
+            
+            
+            <tr class="active">
+                <td>1</td>
+                <td>test_admin_login_.json</td>
+                <td>None</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="None" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="fileerror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="读取的json文件存在错误Extra data: line 2 column 10 (char 10)，文件为：E:\jackstudy\LetApiRun\data\custemor\test_admin_login_.json" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>2</td>
+                <td>test_superadmin_login_.json</td>
+                <td>login_commuity_with_jack_中文</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;data1&#39;: &#39;{ &#34;username&#34;: &#34;${username}&#34;, &#34;password&#34;: &#34;123456&#34;}&#39;, &#39;username&#39;: &#39;tunicorn&#39;, &#39;num1&#39;: 123, &#39;data2&#39;: {&#39;username&#39;: &#39;tunicorn&#39;, &#39;password&#39;: &#39;123456&#39;}}, &#39;validator&#39;: {&#39;assertEqStr&#39;: [&#39;100000&#39;], &#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqHeaders&#39;: {&#39;Content-Type&#39;: &#39;application/json;charset=UTF-8&#39;}}, &#39;collector&#39;: {&#39;json&#39;: {&#39;supertoken&#39;: &#39;response.data.token&#39;}, &#39;methods&#39;: {}}, &#39;name&#39;: &#39;login_commuity_with_jack_中文&#39;, &#39;teardowncase&#39;: {&#39;clearsession&#39;: &#39;clearsession&#39;, &#39;clear_cookies&#39;: &#39;clearcookies&#39;, &#39;cleartoken&#39;: &#39;cleartoken&#39;}, &#39;requestor&#39;: {&#39;data&#39;: &#39;${data2}&#39;, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/auth/login&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:&#34;ab590635-c4ba-481e-aa49-04c8836cb8d6&#34;,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;success&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:{&#34;userResponse&#34;:{&#34;id&#34;:2,&#34;username&#34;:&#34;tunicorn&#34;,&#34;email&#34;:&#34;17700000009@1.cn&#34;,&#34;mobile&#34;:&#34;17700000009&#34;,&#34;name&#34;:&#34;设备管理超管账号&#34;,&#34;areaCode&#34;:1,&#34;comment&#34;:null,&#34;customerId&#34;:null,&#34;roleId&#34;:11,&#34;roleName&#34;:&#34;设备管理-超管角色&#34;,&#34;areaName&#34;:&#34;安徽省&#34;},&#34;token&#34;:&#34;eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#34;}}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.389</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>3</td>
+                <td>test_00_post_查询功能.json</td>
+                <td>01_按照姓名查询</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;5_16_1568200591769_2mCnXNqK.jpeg&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;01_按照姓名查询&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;data&#39;: {&#39;compareResult&#39;: None, &#39;deviceNodeIds&#39;: [], &#39;endTime&#39;: &#39;&#39;, &#39;name&#39;: &#39;q6&#39;, &#39;startTime&#39;: &#39;&#39;, &#39;accessStatus&#39;: None}, &#39;pageIndex&#39;: 0, &#39;pageSize&#39;: 15}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/mccemv/device-mgr/api/v1/record/list&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params admintoken]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>4</td>
+                <td>test_00_post_查询功能.json</td>
+                <td>02_按照设备节点、出入状态查询</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqStr&#39;: [&#39;100000&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;02_按照设备节点、出入状态查询&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;data&#39;: {&#39;compareResult&#39;: None, &#39;deviceNodeIds&#39;: [4, 3, 2], &#39;endTime&#39;: &#39;&#39;, &#39;name&#39;: None, &#39;startTime&#39;: &#39;&#39;, &#39;accessStatus&#39;: &#39;out&#39;}, &#39;pageIndex&#39;: 0, &#39;pageSize&#39;: 15}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/mccemv/device-mgr/api/v1/record/list&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params admintoken]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>5</td>
+                <td>test_00_post_正_新建子园区.json</td>
+                <td>添加注册园区</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;sql&#39;: &#39;select id from tb_node where name like &#34;测试添加园区（可删除）&#34;&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;保存成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {&#39;methods&#39;: {&#39;child_building_id&#39;: &#34;${__sql_select(&#39;${sql}&#39;, &#39;${confpath}&#39;, db=2)}&#34;}}, &#39;name&#39;: &#39;添加注册园区&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;addType&#39;: &#39;sub&#39;, &#39;name&#39;: &#39;测试添加园区（可删除）&#39;, &#39;parkType&#39;: {&#39;type&#39;: &#39;BUILDING&#39;, &#39;configId&#39;: &#39;1&#39;}, &#39;parentId&#39;: &#39;1&#39;, &#39;parkName&#39;: &#39;&#39;, &#39;areaCode&#39;: &#39;4&#39;}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/mccemv/device-mgr/api/v1/park/create&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params admintoken]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>6</td>
+                <td>test_01_put_正_编辑子园区.json</td>
+                <td>编辑子园区</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;confid&#39;: &#34;${__get_random_str(&#39;1234&#39;, 1)}&#34;, &#39;randomint&#39;: &#39;${__get_random_num(3000, 6000)}&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;保存成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;编辑子园区&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;addType&#39;: &#39;sub&#39;, &#39;updateTime&#39;: 1568881560000, &#39;id&#39;: 36, &#39;uid&#39;: &#39;uid_park_36&#39;, &#39;nodeType&#39;: &#39;BUILDING&#39;, &#39;districtCode&#39;: &#39;110000,110100,110101&#39;, &#39;parkTypeStr&#39;: &#39;大门&#39;, &#39;fatherParkTypeStr&#39;: &#39;恒大园区&#39;, &#39;parentId&#39;: &#39;1&#39;, &#39;parkType&#39;: {&#39;type&#39;: &#39;BUILDING&#39;, &#39;configId&#39;: &#39;4&#39;}, &#39;name&#39;: &#39;测试修改子园区（勿动）_${randomint}&#39;, &#39;fatherName&#39;: &#39;阳光半岛&#39;, &#39;areaCode&#39;: &#39;4&#39;, &#39;child&#39;: []}, &#39;method&#39;: &#39;PUT&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/mccemv/device-mgr/api/v1/park/update&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params admintoken]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>7</td>
+                <td>test_03_delete_正_删除子园区.json</td>
+                <td>删除子园区</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;confid&#39;: &#34;${__get_random_str(&#39;1234&#39;, 1)}&#34;, &#39;randomint&#39;: &#39;${__get_random_num(3000, 6000)}&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;删除成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;删除子园区&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {}, &#39;method&#39;: &#39;DELETE&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/mccemv/device-mgr/api/v1/park/delete/${child_building_id}&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params child_building_id]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>8</td>
+                <td>test_00_post_正_新建房屋.json</td>
+                <td>新建房屋</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;sql&#39;: &#39;select id from tb_node where name like &#34;测试添加房屋（勿删）&#34;&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;保存成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {&#39;methods&#39;: {&#39;child_room_id&#39;: &#34;${__sql_select(&#39;${sql}&#39;, &#39;${confpath}&#39;, db=2)}&#34;}}, &#39;name&#39;: &#39;新建房屋&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;parentUid&#39;: &#39;uid_park_4&#39;, &#39;addType&#39;: &#39;sub&#39;, &#39;parentId&#39;: 4, &#39;parkType&#39;: {&#39;type&#39;: &#39;ROOM&#39;, &#39;configId&#39;: 1}, &#39;name&#39;: &#39;测试添加房屋（勿删）&#39;, &#39;areaCode&#39;: 4}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/mccemv/device-mgr/api/v1/park/create&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params admintoken]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>9</td>
+                <td>test_01_put_正_编辑房屋.json</td>
+                <td>编辑房屋</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;confid&#39;: &#34;${__get_random_str(&#39;1234&#39;, 1)}&#34;, &#39;randomint&#39;: &#39;${__get_random_num(3000, 6000)}&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;保存成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;编辑房屋&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;parentUid&#39;: &#39;uid_park_4&#39;, &#39;addType&#39;: &#39;sub&#39;, &#39;updateTime&#39;: 1568882463000, &#39;id&#39;: 38, &#39;uid&#39;: &#39;uid_park_38&#39;, &#39;nodeType&#39;: &#39;ROOM&#39;, &#39;districtCode&#39;: &#39;110000,110100,110101&#39;, &#39;parkChildName&#39;: &#39;半岛子园区3&#39;, &#39;parkTypeStr&#39;: &#39;房屋&#39;, &#39;parentId&#39;: 4, &#39;parkType&#39;: {&#39;type&#39;: &#39;ROOM&#39;, &#39;configId&#39;: 1}, &#39;name&#39;: &#39;测试编辑房屋（勿删)_${randomint}&#39;, &#39;parkName&#39;: &#39;阳光半岛&#39;, &#39;areaCode&#39;: 4}, &#39;method&#39;: &#39;PUT&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/mccemv/device-mgr/api/v1/park/update&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params admintoken]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>10</td>
+                <td>test_03_delete_正_删除房屋.json</td>
+                <td>删除房屋</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;confid&#39;: &#34;${__get_random_str(&#39;1234&#39;, 1)}&#34;, &#39;randomint&#39;: &#39;${__get_random_num(3000, 6000)}&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;删除成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;删除房屋&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {}, &#39;method&#39;: &#39;DELETE&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/mccemv/device-mgr/api/v1/park/delete/${child_room_id}&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params child_room_id]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>11</td>
+                <td>test_00_Grouping_add_内置类型.json</td>
+                <td>grouping_add_内置类型</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;customer_AppKey&#39;: &#39;wosi526443k9y42y&#39;, &#39;customer_Secret&#39;: &#39;hay2tfwzbowx73h4&#39;, &#39;groupConfId&#39;: 1, &#39;customer&#39;: &#39;mccemv&#39;, &#39;groupName&#39;: &#39;自动化小组&#39;, &#39;sql&#39;: &#39;select id from tb_group order by create_time desc limit 1&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;接口请求成功&#39;]}, &#39;collector&#39;: {&#39;json&#39;: {&#39;groupingCode&#39;: &#39;response.code&#39;}, &#39;methods&#39;: {&#39;group_delete_id&#39;: &#34;${__sql_select(&#39;${sql}&#39;, &#39;${confpath}&#39;, db=2)}&#34;}}, &#39;name&#39;: &#39;grouping_add_内置类型&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;confId&#39;: &#39;${groupConfId}&#39;, &#39;name&#39;: &#39;${groupName}&#39;, &#39;type&#39;: &#39;PERSONGROUP&#39;}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/${customer}/device-mgr/api/device/v1/group/create&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params admintoken]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>12</td>
+                <td>test_03_Grouping_update.json</td>
+                <td>grouping_修改小组名称_case</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;randomint&#39;: &#39;${__get_random_num(1000, 2000)}&#39;, &#39;customer&#39;: &#39;mccemv&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;接口请求成功&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;grouping_修改小组名称_case&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;confId&#39;: 1, &#39;name&#39;: &#39;测试添加小组_${randomint}&#39;, &#39;type&#39;: &#39;PERSONGROUP&#39;, &#39;id&#39;: 13}, &#39;method&#39;: &#39;PUT&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/${customer}/device-mgr/api/device/v1/group/update&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="url-method-headers-data-terror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params admintoken]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="active">
+                <td>13</td>
+                <td>test_04_Grouping_delete.json</td>
+                <td>grouping_delete_case</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;data1&#39;: {&#39;groupIds&#39;: [&#39;${group_delete_id}&#39;]}, &#39;customer&#39;: &#39;mccemv&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;删除成功&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;grouping_delete_case&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: &#39;${data1}&#39;, &#39;method&#39;: &#39;DELETE&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer ${admintoken}&#39;}, &#39;url&#39;: &#39;${host}/${customer}/device-mgr/api/device/v1/group/batch_delete&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="setuperror" style="color: coral">查看返回</a></td>
+                <td>False</td>
+                <td>0</td>
+                 <td>N</td>
+                <td>N</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="[params error exception：NotFoundParams, message:not found params group_delete_id]
+" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>14</td>
+                <td>test_00_post_正_添加注册新小区.json</td>
+                <td>添加注册新小区</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;confpath&#39;: &#39;E:\\jackstudy\\LetApiRun\\data\\custemor\\InitConf.ini&#39;, &#39;sql&#39;: &#39;select id from customer order by create_time desc limit 1&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;创建成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {&#39;methods&#39;: {&#39;deleteid&#39;: &#34;${__sql_select(&#39;${sql}&#39;, &#39;${confpath}&#39;)}&#34;}}, &#39;name&#39;: &#39;添加注册新小区&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;street&#39;: &#39;1&#39;, &#39;firstLevelCode&#39;: &#39;110000&#39;, &#39;unitName&#39;: &#39;&#39;, &#39;unitCode&#39;: &#39;&#39;, &#39;confId&#39;: 4, &#39;checkInHouses&#39;: &#39;&#39;, &#39;responsibleMobile&#39;: &#39;13212387659&#39;, &#39;thirdLevelCode&#39;: &#39;110101&#39;, &#39;responsibleName&#39;: &#39;j&#39;, &#39;unitType&#39;: &#39;&#39;, &#39;checkInPeoples&#39;: &#39;&#39;, &#39;areaCode&#39;: &#39;110000,110100,110101&#39;, &#39;secondLevelName&#39;: &#39;市辖区&#39;, &#39;secondLevelCode&#39;: &#39;110100&#39;, &#39;registerAllHouses&#39;: &#39;&#39;, &#39;name&#39;: &#39;del01&#39;, &#39;thirdLevelName&#39;: &#39;东城区&#39;, &#39;firstLevelName&#39;: &#39;北京市&#39;, &#39;areaCodes&#39;: [&#39;110000&#39;, &#39;110100&#39;, &#39;110101&#39;]}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/customer/add&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:null,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;100000&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:&#34;创建成功&#34;}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.1297</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>15</td>
+                <td>test_01_put_正_编辑注册新小区.json</td>
+                <td>编辑新小区信息</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;cname&#39;: &#39;${__get_random_num(1000, 2000)}&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;更新成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;编辑新小区信息&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;appSecret&#39;: &#39;bqgr8ns40dis983t&#39;, &#39;firstLevelCode&#39;: &#39;110000&#39;, &#39;unitName&#39;: &#39;&#39;, &#39;id&#39;: 11, &#39;unitCode&#39;: &#39;&#39;, &#39;confId&#39;: 5, &#39;comment&#39;: None, &#39;customerUrl&#39;: &#39;http://172.16.1.222:8009/xpnrls/device-mgr/&#39;, &#39;domain&#39;: &#39;xpnrls&#39;, &#39;secondLevelName&#39;: &#39;市辖区&#39;, &#39;thirdLevelCode&#39;: &#39;110101&#39;, &#39;secondLevelCode&#39;: &#39;110100&#39;, &#39;thirdLevelName&#39;: &#39;东城区&#39;, &#39;appKey&#39;: &#39;35y5wo3wpkjzo8pt&#39;, &#39;street&#39;: &#39;22&#39;, &#39;responsibleMobile&#39;: &#39;13212387659&#39;, &#39;lastRecodeTime&#39;: &#39;2019-09-17 10:51:34&#39;, &#39;checkInHouses&#39;: 0, &#39;customerId&#39;: 11, &#39;deviceNo&#39;: 0, &#39;firstLevelName&#39;: &#39;北京市&#39;, &#39;responsibleName&#39;: &#39;jjj&#39;, &#39;unitType&#39;: None, &#39;checkInPeoples&#39;: 0, &#39;areaCode&#39;: &#39;110000,110100,110101&#39;, &#39;registerAllHouses&#39;: 0, &#39;name&#39;: &#39;del01827&#39;, &#39;nodeId&#39;: 13, &#39;status&#39;: &#39;active&#39;, &#39;areaCodes&#39;: [&#39;110000&#39;, &#39;110100&#39;, &#39;110101&#39;]}, &#39;method&#39;: &#39;PUT&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/customer/edit&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:null,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;100000&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:&#34;更新成功&#34;}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.0598</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>16</td>
+                <td>test_02_delete_正_删除注册新小区.json</td>
+                <td>删除新小区</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqJson&#39;: {&#39;success&#39;: True}, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;删除成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;删除新小区&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {}, &#39;method&#39;: &#39;DELETE&#39;, &#39;headers&#39;: {&#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/customer/delete/${deleteid}&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:null,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;100000&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:&#34;删除成功&#34;}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.0658</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>17</td>
+                <td>test_03_post_查询小区.json</td>
+                <td>按照小区名称、街道巷进行查询搜索</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;列表返回成功&#39;, &#39;恒大帝景&#39;, &#39;人名录&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;按照小区名称、街道巷进行查询搜索&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;pageSize&#39;: 15, &#39;pageIndex&#39;: 0, &#39;data&#39;: {&#39;street&#39;: &#39;人&#39;, &#39;domain&#39;: &#39;&#39;, &#39;areaCodes&#39;: &#39;&#39;, &#39;name&#39;: &#39;恒大&#39;, &#39;status&#39;: None, &#39;areaCode&#39;: &#39;&#39;}}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/customer/list&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:null,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;列表返回成功&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:{&#34;perPage&#34;:20,&#34;pageNum&#34;:0,&#34;totalCount&#34;:1,&#34;datas&#34;:[{&#34;deviceNo&#34;:6,&#34;id&#34;:3,&#34;domain&#34;:&#34;xiifms&#34;,&#34;name&#34;:&#34;恒大帝景&#34;,&#34;street&#34;:&#34;人名录&#34;,&#34;areaCode&#34;:&#34;120000,120100,120101&#34;,&#34;responsibleName&#34;:&#34;jack2&#34;,&#34;responsibleMobile&#34;:&#34;13212345679&#34;,&#34;unitType&#34;:1,&#34;unitName&#34;:&#34;2&#34;,&#34;unitCode&#34;:&#34;2&#34;,&#34;registerAllHouses&#34;:2,&#34;checkInHouses&#34;:2,&#34;checkInPeoples&#34;:2,&#34;comment&#34;:null,&#34;confId&#34;:2,&#34;status&#34;:&#34;active&#34;,&#34;lastRecodeTime&#34;:&#34;2019-09-18 15:05:55&#34;,&#34;nodeId&#34;:8,&#34;appKey&#34;:&#34;bgbu691b75xcbxln&#34;,&#34;appSecret&#34;:&#34;6dl2i6ap181n0thb&#34;,&#34;customerUrl&#34;:&#34;http://172.16.1.222:8009/xiifms/device-mgr/&#34;}]}}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.0269</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>18</td>
+                <td>test_03_post_查询小区.json</td>
+                <td>按照小区行政区划进行查询搜索</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;列表返回成功&#39;, &#39;恒大帝景&#39;, &#39;人名录&#39;, &#39;xiifms&#39;, &#39;gvhkxm&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;按照小区行政区划进行查询搜索&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;pageSize&#39;: 15, &#39;pageIndex&#39;: 0, &#39;data&#39;: {&#39;street&#39;: &#39;&#39;, &#39;domain&#39;: &#39;&#39;, &#39;areaCodes&#39;: [&#39;120000&#39;, &#39;120100&#39;, &#39;120101&#39;], &#39;name&#39;: &#39;&#39;, &#39;status&#39;: None, &#39;areaCode&#39;: &#39;120000,120100,120101&#39;}}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/customer/list&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:null,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;列表返回成功&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:{&#34;perPage&#34;:20,&#34;pageNum&#34;:0,&#34;totalCount&#34;:2,&#34;datas&#34;:[{&#34;deviceNo&#34;:6,&#34;id&#34;:3,&#34;domain&#34;:&#34;xiifms&#34;,&#34;name&#34;:&#34;恒大帝景&#34;,&#34;street&#34;:&#34;人名录&#34;,&#34;areaCode&#34;:&#34;120000,120100,120101&#34;,&#34;responsibleName&#34;:&#34;jack2&#34;,&#34;responsibleMobile&#34;:&#34;13212345679&#34;,&#34;unitType&#34;:1,&#34;unitName&#34;:&#34;2&#34;,&#34;unitCode&#34;:&#34;2&#34;,&#34;registerAllHouses&#34;:2,&#34;checkInHouses&#34;:2,&#34;checkInPeoples&#34;:2,&#34;comment&#34;:null,&#34;confId&#34;:2,&#34;status&#34;:&#34;active&#34;,&#34;lastRecodeTime&#34;:&#34;2019-09-18 15:05:55&#34;,&#34;nodeId&#34;:8,&#34;appKey&#34;:&#34;bgbu691b75xcbxln&#34;,&#34;appSecret&#34;:&#34;6dl2i6ap181n0thb&#34;,&#34;customerUrl&#34;:&#34;http://172.16.1.222:8009/xiifms/device-mgr/&#34;},{&#34;deviceNo&#34;:0,&#34;id&#34;:6,&#34;domain&#34;:&#34;gvhkxm&#34;,&#34;name&#34;:&#34;1&#34;,&#34;street&#34;:&#34;1&#34;,&#34;areaCode&#34;:&#34;120000,120100,120101&#34;,&#34;responsibleName&#34;:&#34;1&#34;,&#34;responsibleMobile&#34;:&#34;132123456780&#34;,&#34;unitType&#34;:null,&#34;unitName&#34;:&#34;&#34;,&#34;unitCode&#34;:&#34;&#34;,&#34;registerAllHouses&#34;:0,&#34;checkInHouses&#34;:0,&#34;checkInPeoples&#34;:0,&#34;comment&#34;:null,&#34;confId&#34;:2,&#34;status&#34;:&#34;inactive&#34;,&#34;lastRecodeTime&#34;:&#34;2019-09-17 11:09:24&#34;,&#34;nodeId&#34;:14,&#34;appKey&#34;:&#34;5i0ij0qp9zk86e8l&#34;,&#34;appSecret&#34;:&#34;z8fc23k4nav3ev0b&#34;,&#34;customerUrl&#34;:&#34;http://172.16.1.222:8009/gvhkxm/device-mgr/&#34;}]}}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.0389</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>19</td>
+                <td>test_00_post_查询小区功能.json</td>
+                <td>按照小区名称进行查询搜索</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;列表返回成功&#39;, &#39;阳光半岛&#39;, &#39;街道人名录&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;按照小区名称进行查询搜索&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;data&#39;: {&#39;street&#39;: &#39;&#39;, &#39;name&#39;: &#39;阳光&#39;, &#39;sortStr&#39;: &#39;desc&#39;, &#39;orderStr&#39;: &#39;record_count&#39;, &#39;areaCode&#39;: &#39;&#39;}, &#39;pageIndex&#39;: 0, &#39;pageSize&#39;: 15}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/customer/data_board&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:null,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;列表返回成功&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:{&#34;perPage&#34;:20,&#34;pageNum&#34;:0,&#34;totalCount&#34;:1,&#34;datas&#34;:[{&#34;id&#34;:2,&#34;nodeId&#34;:1,&#34;name&#34;:&#34;阳光半岛&#34;,&#34;street&#34;:&#34;街道人名录&#34;,&#34;areaCode&#34;:&#34;110000,110100,110101&#34;,&#34;recordCount&#34;:70,&#34;faceCount&#34;:19,&#34;roomCount&#34;:3,&#34;recordTime&#34;:&#34;2019-09-12 16:08:48&#34;,&#34;status&#34;:&#34;active&#34;}]}}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.0309</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>20</td>
+                <td>test_00_post_add_customer_user_manager.json</td>
+                <td>给小区添加管理员用户</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;sql&#39;: &#39;select id from user order by create_time desc limit 1&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;接口请求成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {&#39;methods&#39;: {&#39;userid&#39;: &#34;${__sql_select(&#39;${sql}&#39;, &#39;${confpath}&#39;)}&#34;}}, &#39;name&#39;: &#39;给小区添加管理员用户&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;comment&#39;: &#39;备注&#39;, &#39;password&#39;: &#39;111111&#39;, &#39;name&#39;: &#39;3&#39;, &#39;username&#39;: &#39;13212354567&#39;, &#39;customerId&#39;: 21, &#39;checkPass&#39;: &#39;111111&#39;}, &#39;method&#39;: &#39;POST&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/super_user/create&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:&#34;6b241c35-6e01-4d3b-99ad-2d02b830b31f&#34;,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;接口请求成功&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:null}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.1945</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>21</td>
+                <td>test_01_put_edit_customer_manager.json</td>
+                <td>编辑小区管理员用户名称和登录名</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {&#39;username&#39;: &#39;${__get_random_num(1000, 9000)}&#39;}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;接口请求成功&#39;, &#39;true&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;编辑小区管理员用户名称和登录名&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {&#39;customerName&#39;: &#39;测试编辑功能小区（勿删）&#39;, &#39;roleId&#39;: 15, &#39;mobile&#39;: None, &#39;id&#39;: 6, &#39;userStatus&#39;: &#39;active&#39;, &#39;comment&#39;: &#39;&#39;, &#39;updateTimeStr&#39;: &#39;2019-09-18 15:36:30&#39;, &#39;customerId&#39;: 22, &#39;updateTime&#39;: &#39;2019-09-18T07:36:30.000+0000&#39;, &#39;email&#39;: None, &#39;name&#39;: &#39;jackeditor8375&#39;, &#39;username&#39;: &#39;jackedit8375&#39;, &#39;roleName&#39;: &#39;小区管理员&#39;, &#39;areaCode&#39;: None}, &#39;method&#39;: &#39;PUT&#39;, &#39;headers&#39;: {&#39;Content-Type&#39;: &#39;application/json&#39;, &#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/super_user/update&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:&#34;243c072a-ce28-4d3a-a960-cff08a8c6a70&#34;,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;接口请求成功&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:null}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.0329</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+            
+            <tr class="success">
+                <td>22</td>
+                <td>test_02_delete_删除新建的用户.json</td>
+                <td>删除小区管理员功能</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="bottom"
+			data-content="{&#39;setupcase&#39;: {}, &#39;validator&#39;: {&#39;assertEqCode&#39;: 200, &#39;assertEqStr&#39;: [&#39;100000&#39;, &#39;true&#39;]}, &#39;collector&#39;: {}, &#39;name&#39;: &#39;删除小区管理员功能&#39;, &#39;teardowncase&#39;: {}, &#39;requestor&#39;: {&#39;data&#39;: {}, &#39;method&#39;: &#39;DELETE&#39;, &#39;headers&#39;: {&#39;Authorization&#39;: &#39;Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJhcmVhQ29kZVwiOjEsXCJjdXN0b21lcklkXCI6MSxcImRvbWFpblwiOlwiZGVmYXVsdFwiLFwiaWRcIjoyLFwibmFtZVwiOlwidHVuaWNvcm5cIixcInRhZ1wiOjF9IiwiYXVkIjoiYWQ5YmIwYjMtZTMyNi00NDUwLWFmM2MtMzJhNDBkMmNiMzFlIiwiaXNzIjoidHVuaWNvcm4iLCJleHAiOjE1Njg5NzEzNzMsImlhdCI6MTU2ODg4NDk3MywianRpIjoiand0In0.sUI3RMRC-F2WQtquz4ZKgflPiDYTl74OcPqMoFb9Dko&#39;}, &#39;url&#39;: &#39;${host}/device-mgr/api/v1/super_user/delete/${userid}&#39;}}" style="color: aqua;">查看请求</a></td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="{&#34;requestId&#34;:&#34;c1567ba3-1e6a-43d1-a415-80c4716749c4&#34;,&#34;code&#34;:&#34;100000&#34;,&#34;message&#34;:&#34;&#34;,&#34;success&#34;:true,&#34;errorCode&#34;:0,&#34;errorMessage&#34;:null,&#34;data&#34;:null}" style="color: coral">查看返回</a></td>
+                <td>True</td>
+                <td>0.1346</td>
+                <td>Y</td>
+                <td>Y</td>
+                <td><a data-container="body" data-toggle="popover" data-placement="top"
+			data-content="" style="color: coral">查看备注</a></td>
+            </tr>
+            
+            
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var success = "10";
+    var fail = "11";
+    var error = "1";
+    // 指定图表的配置项和数据
+    var option_pie = {
+        title: {
+            text: '用例执行情况占比',
+            subtext: '',
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['成功', '失败', '异常']
+        },
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {value: success, name: '成功'},
+                    {value: fail, name: '失败'},
+                    {value: error, name: '异常'}
+
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+                    normal:{
+                         color:function(params) {
+                         //自定义颜色
+                         var colorList = [
+                              '#00EE00',
+                              '#C1232B',
+                              '#F4E001'
+                             ];
+                             return colorList[params.dataIndex]
+                          }
+                    }
+                }
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option_pie);
+</script>
+<script>
+    $(function () {
+	$("[data-toggle='popover']").popover();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Bootstrap 实例 - 上下文类</title>
+    <h1 style="text-align: center">API-Report</h1>
+
+    <link href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!--<script src='https://cdn.bootcss.com/Chart.js/2.7.3/Chart.js'></script>-->
+    <!--<script type="text/javascript" src="./static/echarts.js"></script>-->
+    <!--<script src="./static/echarts.min.js"></script>-->
+    <script src="http://echarts.baidu.com/dist/echarts.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <ul class="list-group">
+                <li class="list-group-item"><span>失败文件/总文件个数: </span><span class="label label-primary">1 / 4 </span></li>
+                <li class="list-group-item"><span>总用例数: 5</span></li>
+                <li class="list-group-item"><span>成功用例数: 0</span></li>
+                <li class="list-group-item"><span>失败用例个数: 4 </span></li>
+                <li class="list-group-item"><span>平均响应时间: 0 </span></li>
+                <li class="list-group-item"><span>最小响应时间: 0 </span></li>
+                <li class="list-group-item"><span>最大响应时间: 0 </span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-5" style="border: 1px;">
+            <div id="main" style="width: 400px;height: 300px;"></div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <table class="table">
+
+            <caption>API 结果列表</caption>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>所属文件</th>
+                <th>用例名称</th>
+                <th>请求json</th>
+                <th>响应</th>
+                <th>执行结果</th>
+                <th>执行时间</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--<tr class="active">-->
+            <!--<td>1</td>-->
+            <!--<td>23/11/2013</td>-->
+            <!--<td>ing</td>-->
+            <!--</tr>-->
+            <!--<tr class="success">-->
+            <!--<td>2</td>-->
+            <!--<td>10/11/2013</td>-->
+            <!--<td>om</td>-->
+            <!--</tr>-->
+            <!--<tr class="warning">-->
+            <!--<td>产品3</td>-->
+            <!--<td>20/10/2013</td>-->
+            <!--<td>待确认</td>-->
+            <!--</tr>-->
+            
+            
+            <tr class="danger">
+                <td>1</td>
+                <td>test_login_com.json</td>
+                <td>login_commuity_with_jack_中文</td>
+                <td>{'validator': {'assertEqJson': {'success': True}, 'assertEqHeaders': {'Content-Type': 'application/json;charset=UTF-8'}, 'assertEqCode': 299, 'assertEqStr': ['100000']}, 'setupcase': {'d': 'anc', 'abc': 123, 'a': "${__get_value(${abc}, ${c}, '${d}')}", 'fun2': '${__get_value(a=1, b=2)}', 'c': 3, 'username': 'jack2', 'success': "${__get_value('success')}"}, 'collector': {'json': {'token': 'response.data.token'}}, 'name': 'login_commuity_with_jack_中文', 'requestor': {'headers': {'content-type': 'application/json'}, 'data': {'username': '${username}', 'password': '111111'}, 'url': '${host}/fosdga/device-mgr/api/auth/login', 'method': 'POST'}, 'teardowncase': {'clear_cookies': 'clearcookies', 'clearsession': 'clearsession', 'cleartoken': 'cleartoken'}}</td>
+                <td>error</td>
+                <td>False</td>
+                <td>2.1941301822662354</td>
+                <td>[request error: HTTPConnectionPool(host='172.16.1.222', port=8009): Max retries exceeded with url: /fosdga/device-mgr/api/auth/login (Caused by ConnectTimeoutError(<requests.packages.urllib3.connection.HTTPConnection object at 0x0000028089D138D0>, 'Connection to 172.16.1.222 timed out. (connect timeout=2)'))]
+</td>
+            </tr>
+            
+            
+            
+            <tr class="danger">
+                <td>2</td>
+                <td>test_02.json</td>
+                <td>None</td>
+                <td>None</td>
+                <td></td>
+                <td>False</td>
+                <td>0</td>
+                <td>读取的json文件存在错误Extra data: line 2 column 11 (char 11)，文件为：E:\jackstudy\LetApiRun\data\Dface\菜单管理\test_02.json</td>
+            </tr>
+            
+            
+            
+            <tr class="danger">
+                <td>3</td>
+                <td>test_patch_edit_face.json</td>
+                <td>add_face_case_1</td>
+                <td>{'validator': {'assertEqJson': {'success': True}, 'assertEqHeaders': {'Content-Type': 'application/json;charset=UTF-8'}, 'assertEqCode': 200, 'assertEqStr': ['100000', '接口请求成功', 'user_22']}, 'setupcase': {'path': 'E:\\jackstudy\\LetApiRun\\test_image\\3gitveq4i940b3x0.jpg', 'name': 'user_223', 'faceid': 16}, 'collector': {}, 'name': 'add_face_case_1', 'requestor': {'headers': {'Authorization': 'Bearer ${token}'}, 'data': {'groupId': '11', 'mobile': '44333', 'idCard': '4433', 'id': '16', 'sex': 'female', 'name': '${name}', 'roomIds': '25', 'nodeIds': '17'}, 'files': {'image': '${path}'}, 'url': '${host}/fosdga/device-mgr/api/v1/device/face/${faceid}', 'method': 'PATCH'}, 'teardowncase': {'clear_cookies': 'clearcookies', 'clearsession': 'clearsession', 'cleartoken': 'cleartoken'}}</td>
+                <td>error</td>
+                <td>False</td>
+                <td>0.0</td>
+                <td>[params error exception：NotFoundParams, message:not found params token]
+[request error: local variable 'headers' referenced before assignment]
+</td>
+            </tr>
+            
+            
+            
+            <tr class="danger">
+                <td>4</td>
+                <td>test_patch_edit_face.json</td>
+                <td>add_face_case_2</td>
+                <td>{'validator': {'assertEqJson': {'success': True}, 'assertEqHeaders': {'Content-Type': 'application/json;charset=UTF-8'}, 'assertEqCode': 200, 'assertEqStr': ['100000', '接口请求成功', 'user_22']}, 'setupcase': {'path': 'E:\\jackstudy\\LetApiRun\\test_image\\3gitveq4i940b3x0.jpg', 'name': 'user_223', 'faceid': 16}, 'collector': {}, 'name': 'add_face_case_2', 'requestor': {'headers': {'Authorization': 'Bearer ${token}'}, 'data': {'groupId': '11', 'mobile': '44333', 'idCard': '4433', 'id': '16', 'sex': 'male', 'name': '${name}', 'roomIds': '25', 'nodeIds': '17'}, 'files': {'image': '${path}'}, 'url': '${host}/fosdga/device-mgr/api/v1/device/face/${faceid}', 'method': 'PATCH'}, 'teardowncase': {'clear_cookies': 'clearcookies', 'clearsession': 'clearsession', 'cleartoken': 'cleartoken'}}</td>
+                <td>error</td>
+                <td>False</td>
+                <td>0.0</td>
+                <td>[params error exception：NotFoundParams, message:not found params token]
+[request error: local variable 'headers' referenced before assignment]
+</td>
+            </tr>
+            
+            
+            
+            <tr class="danger">
+                <td>5</td>
+                <td>test_post_addface.json</td>
+                <td>add_face_case</td>
+                <td>{'validator': {'assertEqJson': {'success': True}, 'assertEqHeaders': {'Content-Type': 'application/json;charset=UTF-8'}, 'assertEqCode': 200, 'assertEqStr': ['100000', '接口请求成功', 'user4']}, 'setupcase': {'path': 'E:\\jackstudy\\LetApiRun\\test_image\\3giedust1cagbogi.jpg', 'name': 'user44'}, 'collector': {}, 'name': 'add_face_case', 'requestor': {'headers': {'Authorization': 'Bearer ${token}'}, 'data': {'groupId': '11', 'mobile': '33334', 'roomIds': '25', 'idCard': '33334', 'sex': 'male', 'name': '${name}', 'nodeIds': '17'}, 'files': {'image': '${path}'}, 'url': '${host}/fosdga/device-mgr/api/v1/device/face1', 'method': 'POST'}, 'teardowncase': {'clear_cookies': 'clearcookies', 'clearsession': 'clearsession', 'cleartoken': 'cleartoken'}}</td>
+                <td>error</td>
+                <td>False</td>
+                <td>0.0</td>
+                <td>[params error exception：NotFoundParams, message:not found params token]
+[request error: local variable 'headers' referenced before assignment]
+</td>
+            </tr>
+            
+            
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    var success = "0";
+    var fail = "4";
+    var error = "1";
+    // 指定图表的配置项和数据
+    var option_pie = {
+        title: {
+            text: '用例执行情况占比',
+            subtext: '纯属虚构',
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['成功', '失败', '异常']
+        },
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: [
+                    {value: success, name: '成功'},
+                    {value: fail, name: '失败'},
+                    {value: error, name: '异常'}
+
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option_pie);
+</script>
+</body>
+</html>

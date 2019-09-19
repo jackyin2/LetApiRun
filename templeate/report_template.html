@@ -107,7 +107,7 @@
     var option_pie = {
         title: {
             text: '用例执行情况占比',
-            subtext: '纯属虚构',
+            subtext: '',
             x: 'center'
         },
         tooltip: {
@@ -136,6 +136,17 @@
                         shadowBlur: 10,
                         shadowOffsetX: 0,
                         shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+                    normal:{
+                         color:function(params) {
+                         //自定义颜色
+                         var colorList = [
+                              '#00EE00',
+                              '#C1232B',
+                              '#F4E001'
+                             ];
+                             return colorList[params.dataIndex]
+                          }
                     }
                 }
             }
