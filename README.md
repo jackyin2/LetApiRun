@@ -130,15 +130,15 @@ case编写注意事项：
 
 3. 编写用例后，可以进行单json调试：
 
-    使用命令 python let_main.py -d 当前项目的路径 -f debug json文件路径 -r 生成report的名称 -c 是否加载配置文件（1/0）
+    使用命令 python let_api.py -d 当前项目的路径 -f debug json文件路径 -r 生成report的名称 -c 是否加载配置文件（1/0）
     
-    eg： python3 let_main.py -d E:\jackstudy\LetApiRun\data\custemor -f E:\jackstudy\LetApiRun\data\custem
+    eg： python3 let_api.py -d E:\jackstudy\LetApiRun\data\custemor -f E:\jackstudy\LetApiRun\data\custem
 or\superadmin\小区管理\数据看板\test_post_查询小区功能.json -r apireport.html -c 1
 
 
 4. 单文件调试成功后，进行项目整体执行
 
-    使用命令 python let_main.py -d 当前项目的路径
+    使用命令 python let_api.py -d 当前项目的路径
     
 5. 查看报告
     
