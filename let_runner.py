@@ -98,7 +98,7 @@ class Runner(object):
                     _case.result = False
                     _case.validate = "N"
                     _case.collect = "N"
-                    _case.response = "error"
+                    _case.response = "fileerror"
                     _case.time = 0
                     GENARATE_RESULT.append(_case)
                     continue
@@ -144,33 +144,44 @@ class Runner(object):
         vals = case.request["setupcase"]
         _vals = {}
         # 1 首先_vals先加载方法中不存在$的方法和正常的值
-        for key, val in vals.items():
-            # 判断是否是一个待执行的方法，
-            method = is_method(str(val))
-            if method:
-                if is_params(method):
-                    continue
-                # 判断当前的方法是否还需要继续参数化，如果需要参数化，则等待后面执行
-                _vals[key] = eval(method)
-            elif not method:
-                if is_params(str(val)):
-                    continue
-                # 如果不要参数化，判断下是不是路径式字段是则转换
-                _vals[key] = replace_path(val)
+        try:
+            for key, val in vals.items():
+                # 判断是否是一个待执行的方法，
+                method = is_method(str(val))
+                if method:
+                    if is_params(method):
+                        continue
+                    # 判断当前的方法是否还需要继续参数化，如果需要参数化，则等待后面执行
+                    _vals[key] = eval(method)
+                elif not method:
+                    if is_params(str(val)):
+                        continue
+                    # 如果不要参数化，判断下是不是路径式字段是则转换
+                    _vals[key] = replace_path(val)
 
-        # 2 加载非方法内的字符串参数化
-        for k1, v1 in vals.items():
-            method = is_method(str(v1))
-            if not method and is_params(str(v1)):
-                v1 = parameters(v1, _vals, VALUEPOOLS)
-                _vals[k1] = v1
+            # 2 加载非方法内的字符串参数化
+            for k1, v1 in vals.items():
+                method = is_method(str(v1))
+                if not method and is_params(str(v1)):
+                    v1 = parameters(v1, _vals, VALUEPOOLS)
+                    _vals[k1] = v1
 
-        # 此处加载方法中带有参数$ 和 字符串中带有$
-        for k, v in vals.items():
-            method = is_method(str(v))
-            if method and is_params(method):
-                method = parameters(method, _vals, VALUEPOOLS)
-                _vals[k] = eval(method)
+            # 此处加载方法中带有参数$ 和 字符串中带有$
+            for k, v in vals.items():
+                method = is_method(str(v))
+                if method and is_params(method):
+                    method = parameters(method, _vals, VALUEPOOLS)
+                    _vals[k] = eval(method)
+        except NotFoundParams as e:
+            print("error: {}".format(e))
+            case.message = "[params error {}]\n".format(e)
+            case.result = False
+            case.validate = "N"
+            case.collect = "N"
+            case.response = "setuperror"
+            case.time = 0
+            GENARATE_RESULT.append(case)
+            raise ParamsError
         return _vals
 
     def _runapi(self, case, v_setup):
@@ -195,7 +206,7 @@ class Runner(object):
             case.result = False
             case.validate = "N"
             case.collect = "N"
-            case.response = "error"
+            case.response = "url-method-headers-data-terror"
             case.time = 0
             GENARATE_RESULT.append(case)
             raise ParamsError
@@ -226,9 +237,15 @@ class Runner(object):
                 else:
                     re = requests.put(url=url, headers=headers, data=data, files=_files, timeout=2)
             elif method == "DELETE":
-                re = requests.delete(url=url, headers=headers, timeout=2)
+                if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
+                    re = requests.delete(url=url, headers=headers, json=data,files=_files, timeout=2)
+                else:
+                    re = requests.delete(url=url, headers=headers, data=data, files=_files, timeout=2)
             elif method == "PATCH":
-                re = requests.patch(url=url, headers=headers, data=data, files=_files, timeout=2)
+                if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
+                    re = requests.patch(url=url, headers=headers, json=data,files=_files, timeout=2)
+                else:
+                    re = requests.patch(url=url, headers=headers, data=data, files=_files, timeout=2)
         except Exception as e:
             print("当前url：{}， 响应超时, {}".format(url, e))
             re = None
@@ -269,7 +286,7 @@ class Runner(object):
         if re is not None:
             case.response = re.text
         else:
-            case.response = "error"
+            case.response = "request-http-error"
         case.time = runtime
         # case.append(GENARATE_RESULT)
         GENARATE_RESULT.append(case)

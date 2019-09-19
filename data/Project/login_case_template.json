@@ -11,14 +11,22 @@
         "fun3": "${__get_value(${num1}, ${str1}, '${str2}')}",
         "path": "E:\\jackstudy\\test\\test_params.py",
         "dict": {"a":"${str1}"},
-        "dict-str":"{\"a\": ${num1}}"
+        "dict-list": {
+          "a": "${num1}",
+          "b": "${str1}",
+          "c": "abc${num1}",
+          "areaCodes": ["${num1}","${str1}","abc${num1}"],
+          "street": {"aa": "${num1}","bb": "${str1}"},
+        },
+        "list": ["A${num1}", 2]
+
      },
 
      "requestor":{
         "url": "${host}/mccemv/device-mgr/api/auth/login",
         "method": "POST",
         "headers": {"Content-Type": "application/json"},
-       "data": { "username": "${username}", "password": "111111"},
+       "data": "${dict-list}",
        "files":{"image":"${path}"}
      },
 

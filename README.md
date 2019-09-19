@@ -35,13 +35,22 @@
      "name": "login_commuity_with_jack_中文",
 
      "setupcase": {
-       "abc":123,
-       "c":3,
-       "d":"anc",
-       "fun2":"${__get_value(a=1, b=2)}",
-       "success": "${__get_value('success')}",
-       "username": "jack2",
-       "a":"${__get_value(${abc}, ${c}, '${d}')}"
+       "num1": 123,
+        "str1": "anc",
+        "fun1": "${__get_value(a=1, b=2)}",
+        "fun2": "${__get_value('success')}",
+        "str2": "jack2${str1}",
+        "fun3": "${__get_value(${num1}, ${str1}, '${str2}')}",
+        "path": "E:\\jackstudy\\test\\test_params.py",
+        "dict": {"a":"${str1}"},
+        "dict-list": {
+          "a": "${num1}",
+          "b": "${str1}",
+          "c": "abc${num1}",
+          "areaCodes": ["${num1}","${str1}","abc${num1}"],
+          "street": {"aa": "${num1}","bb": "${str1}"},
+        },
+        "list": ["A${num1}", 2]
      },
 
      "requestor":{
@@ -134,3 +143,4 @@ or\superadmin\小区管理\数据看板\test_post_查询小区功能.json -r api
 5. 查看报告
     
     report文件下查看report.html文件
+    ![Image 项目结构](./templeate/static/report.jpg)

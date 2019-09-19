@@ -26,6 +26,7 @@ def main(path=None, file=None, init_conf=1, report_name=None):
     report = HtmlReportor(report_name=report_name)
     report.report()
 
+
     # 结果生成
 
 

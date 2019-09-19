@@ -134,24 +134,6 @@ def parameters(obj, var, valuepools):
         for k, v in obj.items():
             v = parameters(v, var, valuepools)
             obj[k] = v
-
-            #     r_str = "${" + str(i) + "}"
-            #     if valuepools.get(i) is not None:
-            #         v = v.replace(r_str, str(valuepools[i]))
-            #     elif var.get(i) is not None:
-            #         if type(var[i]) in [int, float]:
-            #             if len(str(i)) == len(v) - 3:
-            #                 v = eval(v.replace(r_str, str(var[i])))
-            #             else:
-            #                 v = v.replace(r_str, str(var[i]))
-            #         else:
-            #             v = v.replace(r_str, str(var[i]))
-            #     elif var.get(i) is not None and valuepools.get(i) is not None:
-            #         v = v.replace(r_str, str(var[i]))
-            #     else:
-            #         print("var|valuePool中不存在需要的参数{}".format(i))
-            #         raise NotFoundParams(i)
-
     return obj
 
 
