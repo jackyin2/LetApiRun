@@ -227,9 +227,9 @@ class Runner(object):
                 re = requests.get(url=url, params=data, headers=headers)
             else:
                 if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
-                    re = requests.request(method=method, url=url, json=data, files=_files, timeout=2)
+                    re = requests.request(method=method, url=url, json=data, files=_files, headers=headers, timeout=2)
                 else:
-                    re = requests.request(method=method, url=url, data=data, files=_files, timeout=2)
+                    re = requests.request(method=method, url=url, data=data, files=_files,headers=headers, timeout=2)
 
         except Exception as e:
             print("当前url：{}， 响应超时, {}".format(url, e))
@@ -249,16 +249,16 @@ class Runner(object):
         if re is not None:
             try:
                 validate_params = self._valitor(re, case.request["validator"])
-            except NotEqualError as e:
+            except Exception as e:
                 case.result = False
                 case.message = "[validator error: {}]\n".format(e)
                 case.validate = "N"
                 print("error:{}".format(e))
-            except JsonError as e:
-                case.result = False
-                case.message = "[validator error: {}]\n".format(e)
-                case.validate = "N"
-                print("error:{}".format(e))
+            # except JsonError as e:
+            #     case.result = False
+            #     case.message = "[validator error: {}]\n".format(e)
+            #     case.validate = "N"
+            #     print("error:{}".format(e))
             else:
                 if validate_params:
                     case.result = True
@@ -281,14 +281,14 @@ class Runner(object):
         if re is not None:
             try:
                 self._collector(re, case.request["collector"], v_setup)
-            except JsonError as e:
+            except Exception as e:
                 case.message += "[collector error: {}]\n".format(e)
                 print("error: {}".format(e))
                 case.collect = "N"
-            except EvalError as e:
-                case.message += "[collector error: {}]\n".format(e)
-                print("error: {}".format(e))
-                case.collect = "N"
+            # except EvalError as e:
+            #     case.message += "[collector error: {}]\n".format(e)
+            #     print("error: {}".format(e))
+            #     case.collect = "N"
             else:
                 case.collect = "Y"
 
