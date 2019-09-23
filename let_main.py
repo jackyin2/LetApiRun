@@ -26,8 +26,9 @@ def main(path=None, file=None, init_conf=1, report_name=None):
     report = HtmlReportor(report_name=report_name)
     report.report()
 
-# if __name__ == "__main__":
-#     # 1 idel执行
-#     main(path="E:\jackstudy\LetApiRun\data\custemor")
-# #
+if __name__ == "__main__":
+
+    # 1 idel执行
+    main(path="E:\jackstudy\LetApiRun\data\custemor_V2.0")
+
 

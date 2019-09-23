@@ -26,6 +26,32 @@ def reg_str(r, st):
     return False
 
 
+def check_json(path):
+    files = []
+    errorfiles = []
+    all_files = os.walk(path)
+    for root, dirs, filenames in all_files:
+        if filenames == []:
+            continue
+        else:
+            for name in filenames:
+                # 区分测试用例文件和初始化参数文件
+                if name.startswith("test_") and \
+                        (name.endswith(".json") or name.endswith(".yaml")):
+                    file_path = os.path.join(root, name)
+                    files.append(file_path)
+                    try:
+                        f_name = file_path.split("\\")[-1]
+                        with open(file_path, "r", encoding="utf-8") as _f:
+                            json.load(_f)
+                    except Exception as e:
+                        errorfiles.append(f_name)
+                    # if name.startswith("global_") and name.endswith(".py"):
+                    #     pass
+    print("当前文件json文件个数：{}, 错误文件个数：{} 为：{}".format(len(files), len(errorfiles), errorfiles))
+    # return (len(files),  errorfile)
+
+
 def is_path(path):
     if os.path.isfile(str(path)) or os.path.isdir(str(path)):
         return True
@@ -192,6 +218,9 @@ def post_files(path):
         return (filename, open(path, 'rb'), mimetype)
 
 
+# ############################### 自定义扩展函数 ######################################
+
+
 def collect_value(re, tp, str):
     if tp == "headers":
         headers = re.headers
@@ -201,8 +230,6 @@ def collect_value(re, tp, str):
             pass
     pass
 
-
-# ############################### 自定义扩展函数 ######################################
 
 def get_value(*args, **kwargs):
     return 1
@@ -241,7 +268,17 @@ def get_random_str(str, num=None):
         result = random.choice(str)
     else:
         result = random.sample(str, num)
+        result = ''.join(result)
     return result
+
+
+# 从一组中获取随机和指定值
+def get_obj_from_list(group, i=None):
+    if i is None:
+        h = len(group)
+        i = get_random_num(0, h)
+    return group[i]
+
 
 
 # ############################### 数据库相关扩展函数 ####################################

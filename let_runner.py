@@ -84,9 +84,9 @@ class Runner(object):
             self.loader_dir()
         elif self.test_dir is not None and self.test_api is not None:
             self.loader_file()
-        elif self.test_dir is None and self.test_api is None:
-            print("请检查你是否未填写path和file")
-            exit(0)
+        # elif self.test_dir is None and self.test_api is None:
+        #     print("请检查你是否未填写path和file")
+        #     exit(0)
         # 3 check loader是否有内容
         if len(self.loader) > 0:
             for _case in self.loader:
@@ -102,7 +102,7 @@ class Runner(object):
                     _case.time = 0
                     GENARATE_RESULT.append(_case)
                     continue
-                print("*****当前执行第 {} 个 case：{}********".format(count, _case.casename))
+                print("*****当前执行第 {} 个, 隶属于文件{}， case：{}********".format(count, _case.filename, _case.casename))
                 try:
                     # 1 初始化准备
                     if _case.request["setupcase"]:
@@ -197,7 +197,7 @@ class Runner(object):
         # 执行api方法, 此处注意返回的parameter是一个字符串，后续需要进行相关处理
         try:
             url = parameters(case.request["requestor"]["url"], v_setup, VALUEPOOLS)
-            method = parameters(case.request["requestor"]["method"], v_setup, VALUEPOOLS).upper()
+            method = parameters(case.request["requestor"]["method"], v_setup, VALUEPOOLS).lower()
             headers = parameters(case.request["requestor"]["headers"], v_setup, VALUEPOOLS)
             data = parameters(case.request["requestor"]["data"], v_setup, VALUEPOOLS)
         except NotFoundParams as e:
@@ -213,7 +213,7 @@ class Runner(object):
 
         #  此处判断是否存在文件需要处理
         if case.request.get("requestor").get("files"):
-            filedicts = json.loads(parameters(case.request["requestor"]["files"], v_setup, VALUEPOOLS))
+            filedicts = parameters(case.request["requestor"]["files"], v_setup, VALUEPOOLS)
             _files = {}
             for filekey, filevalue in filedicts.items():
                 _files[filekey] = post_files(replace_path(filevalue))
@@ -223,29 +223,14 @@ class Runner(object):
         start = time.time()
 
         try:
-            if method == "GET":
+            if method == "get":
                 re = requests.get(url=url, params=data, headers=headers)
-            elif method == "POST":
+            else:
                 if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
-                    re = requests.post(url=url, headers=headers, json=data,files=_files, timeout=2)
+                    re = requests.request(method=method, url=url, json=data, files=_files, timeout=2)
                 else:
-                    re = requests.post(url=url, headers=headers, data=data, files=_files, timeout=2)
-                # json转换
-            elif method == "PUT":
-                if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
-                    re = requests.put(url=url, headers=headers, json=data,files=_files, timeout=2)
-                else:
-                    re = requests.put(url=url, headers=headers, data=data, files=_files, timeout=2)
-            elif method == "DELETE":
-                if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
-                    re = requests.delete(url=url, headers=headers, json=data,files=_files, timeout=2)
-                else:
-                    re = requests.delete(url=url, headers=headers, data=data, files=_files, timeout=2)
-            elif method == "PATCH":
-                if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
-                    re = requests.patch(url=url, headers=headers, json=data,files=_files, timeout=2)
-                else:
-                    re = requests.patch(url=url, headers=headers, data=data, files=_files, timeout=2)
+                    re = requests.request(method=method, url=url, data=data, files=_files, timeout=2)
+
         except Exception as e:
             print("当前url：{}， 响应超时, {}".format(url, e))
             re = None
