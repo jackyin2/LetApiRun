@@ -23,8 +23,9 @@ def main(path=None, file=None, init_conf=1, report_name=None):
     runer = Runner(path=path, file=file, init_conf=init_conf)
     runer.run()
     # runer.report_to_ctr()
-    report = HtmlReportor(report_name=report_name)
-    report.report()
+    if report_name != "N":
+        report = HtmlReportor(report_name=report_name)
+        report.report()
 
 if __name__ == "__main__":
 

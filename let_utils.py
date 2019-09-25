@@ -127,7 +127,7 @@ def get_params_list_re(obj):
     return l
 
 
-# 当前方法主要用于参数化结果的转化为执行值，如果需要参数化，则参数化后再返回，如果不需要参数化，则直接返回
+# 当前方法主要用于参数化结果的转化为执行值
 def parameters(obj, var, valuepools):
     # 判断如果传值是str对象，那么替换时候不需要eval，直接replace替换
     if isinstance(obj, str):
@@ -137,13 +137,17 @@ def parameters(obj, var, valuepools):
             if valuepools.get(i) is not None:
                 obj = obj.replace(r_str, str(valuepools[i]))
             elif var.get(i) is not None:
-                if type(var[i]) in [int, float, dict, tuple, list]:
+                # 此处重点判断是否需要保留原样式
+                if type(var[i]) in [int, float]:
                     if len(str(i)) == len(obj) - 3:
                         obj = eval(obj.replace(r_str, str(var[i])))
                     else:
                         obj = obj.replace(r_str, str(var[i]))
+                        if obj[0] in ["-", "~"]:
+                            obj = obj[1:len(obj)]
                 else:
                     obj = obj.replace(r_str, str(var[i]))
+
                 # obj = obj.replace(r_str, str(var[i]))
             elif var.get(i) is not None and valuepools.get(i) is not None:
                 obj = obj.replace(r_str, str(var[i]))
@@ -273,18 +277,15 @@ def get_random_str(str, num=None):
 
 
 # 从一组中获取随机和指定值
-def get_obj_from_list(group, i=None):
+def get_random_from_list(group, i=None):
     if i is None:
         h = len(group)
         i = get_random_num(0, h)
     return group[i]
 
 
-
 # ############################### 数据库相关扩展函数 ####################################
-
-
-def sql_select(sql, path,  db=1):
+def sql_select(sql, path, db=1, index=0):
     """
     从数据库中获取需要的值，目前仅支持返回单个值
     :param sql: 数据库执行的sql语句
@@ -320,7 +321,7 @@ def sql_select(sql, path,  db=1):
         print("sql执行错误,请检查sql exception: {}".format(e))
     cursor.close()
     conn.close()
-    return result[0]
+    return result[index]
 
 
 

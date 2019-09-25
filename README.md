@@ -59,7 +59,11 @@
         "headers": {
           "Content-Type": "application/json"
        },
-        "data": { "username": "${username}", "password": "111111"}
+        "data": { "username": "${username}", "password": "111111"},
+        "files":{
+            "image1":"path",
+            "image2":"path2"
+        }
      },
 
      "validator": {

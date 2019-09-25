@@ -11,7 +11,8 @@ import sys
 
 class MyExcepiton(Exception):
     def __str__(self):
-        return ("异常：{}".format(self.__class__.__name__))
+        return ("异常：{}".format(
+            self.__class__.__name__))
 
 
 class JsonError(MyExcepiton):
@@ -24,17 +25,20 @@ class JsonError(MyExcepiton):
 
 class ParseJsonError(JsonError):
     def __str__(self):
-        return ("exception：{}, message：parse json {} error ".format(self.__class__.__name__, self.j))
+        return ("exception：{}, message：parse json {} error ".format(
+            self.__class__.__name__, self.j))
 
 
 class NotJsonError(JsonError):
     def __str__(self):
-        return ("exception：{}, message：{} is not json ".format(self.__class__.__name__, self.j))
+        return ("exception：{}, message：{} is not json ".format(
+            self.__class__.__name__, self.j))
 
 
 class LoadJsonFileError(JsonError):
     def __str__(self):
-        return ("exception：{}, message：from file:{} load api error".format(self.__class__.__name__, self.j))
+        return ("exception：{}, message：from file:{} load api error".format(
+            self.__class__.__name__, self.j))
 
 
 class RequestError(MyExcepiton):
@@ -42,12 +46,14 @@ class RequestError(MyExcepiton):
         self.a = a
 
     def __str__(self):
-        return ("exception：{}, message： {}".format(self.__class__.__name__, self.a))
+        return ("exception：{}, message： {}".format(
+            self.__class__.__name__, self.a))
 
 
 class TimeOutError(RequestError):
     def __str__(self):
-        return ("exception：{}, request timeout： {}".format(self.__class__.__name__, self.a))
+        return ("exception：{}, request timeout： {}".format(
+            self.__class__.__name__, self.a))
 
 
 class NotEqualError(MyExcepiton):
@@ -57,12 +63,8 @@ class NotEqualError(MyExcepiton):
         self.m = m
 
     def __str__(self):
-        return ("exception：{}, method:{},  message:{} not equals or contral {}".format(
+        return ("exception：{}, method:{},  message:{}  ！=  {}".format(
             self.__class__.__name__, self.m, self.a, self.b))
-
-
-class NotHaveMethod():
-    pass
 
 
 class ParamsError(MyExcepiton):

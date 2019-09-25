@@ -20,7 +20,6 @@ parser.add_argument("-r", "--report", help="测试报告", type=str)
 parser.add_argument("-C", "--check", help="json文件检查", type=int, default=0)
 
 args = parser.parse_args()
-print(is_file(args.file), args.file)
 if not is_dir(args.dir):
     print("is not a true dir ,please check! ")
     exit(0)

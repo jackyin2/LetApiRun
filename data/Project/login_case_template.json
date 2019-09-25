@@ -39,7 +39,8 @@
 
      "collector":{
        "json": {"token": "response.data.token"},
-       "methods": {"deleteid": "${__sql_select('${sql}', '${confpath}')}"}
+       "methods": {"deleteid": "${__sql_select('${sql}', '${confpath}')}"},
+       "values":{"deleteid2": "${num1}"}
      },
 
      "teardowncase":{

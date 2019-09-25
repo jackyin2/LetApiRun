@@ -87,6 +87,7 @@ class Runner(object):
         # elif self.test_dir is None and self.test_api is None:
         #     print("请检查你是否未填写path和file")
         #     exit(0)
+
         # 3 check loader是否有内容
         if len(self.loader) > 0:
             for _case in self.loader:
@@ -104,6 +105,17 @@ class Runner(object):
                     continue
                 print("*****当前执行第 {} 个, 隶属于文件{}， case：{}********".format(count, _case.filename, _case.casename))
                 try:
+                    # 0 检查接口依赖
+                    # if _case.request.get("prepare"):
+                    #     prepare = _case.request["prepare"]
+                    #     for p in prepare:
+                    #         with open(p, "r", encoding="utf-8") as f:
+                    #             p_file = json.load(f)
+                    #             for p_case in p_file["test"]:
+                    #                 p_v = self._setup(p_case)
+                    #                 self._runapi(p_case, p_v)
+                    #                 self._teardown(p_case, p_v)
+
                     # 1 初始化准备
                     if _case.request["setupcase"]:
                         v = self._setup(_case)
@@ -121,7 +133,13 @@ class Runner(object):
                     else:
                         print("3: end---no teardown")
                         print()
-                except ParamsError:
+                except Exception:
+                    _case.result = False
+                    _case.validate = "N"
+                    _case.collect = "N"
+                    _case.response = "other_error"
+                    _case.time = 0
+                    GENARATE_RESULT.append(_case)
                     print("3: end---no teardown")
                     print()
                     continue
@@ -200,6 +218,8 @@ class Runner(object):
             method = parameters(case.request["requestor"]["method"], v_setup, VALUEPOOLS).lower()
             headers = parameters(case.request["requestor"]["headers"], v_setup, VALUEPOOLS)
             data = parameters(case.request["requestor"]["data"], v_setup, VALUEPOOLS)
+            # print("url:", url)
+            # print("data", data)
         except NotFoundParams as e:
             print("error: {}".format(e))
             case.message = "[params error {}]\n".format(e)
@@ -223,14 +243,13 @@ class Runner(object):
         start = time.time()
 
         try:
-            if method == "get":
+            if method not in ["post", 'patch', "delete", "put"]:
                 re = requests.get(url=url, params=data, headers=headers)
             else:
                 if headers.get("Content-Type") and headers["Content-Type"] == "application/json":
                     re = requests.request(method=method, url=url, json=data, files=_files, headers=headers, timeout=2)
                 else:
-                    re = requests.request(method=method, url=url, data=data, files=_files,headers=headers, timeout=2)
-
+                    re = requests.request(method=method, url=url, data=data, files=_files, headers=headers, timeout=2)
         except Exception as e:
             print("当前url：{}， 响应超时, {}".format(url, e))
             re = None
@@ -366,6 +385,9 @@ class Runner(object):
                         VALUEPOOLS[k2] = eval(method)
                     except Exception:
                         raise EvalError(method, "Method_collect")
+            elif k == "values":
+                for k3, v3 in v.items():
+                    VALUEPOOLS[k3] = parameters(v3, v_setup, VALUEPOOLS)
             else:
                 pass
 
